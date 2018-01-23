@@ -152,7 +152,7 @@ get_s3_upload_link()
 }
 
 cd ${SRC_DIR}
-FILES=$(ls * | egrep -v 'source|\.xml|\.json|\.properties|\.md5|.\sha*|test_coverage*|CHANGELOG')
+FILES=$(ls * | egrep -v 'source|\.xml|\.json|\.properties|\.md5|.\sha*|test_coverage*|CHANGELOG|unsigned')
 for fl in $FILES; do
     md5sum ${fl} > ${fl}.md5
     sha256sum ${fl} > ${fl}.sha256
