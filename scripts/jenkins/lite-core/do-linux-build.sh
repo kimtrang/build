@@ -2,13 +2,11 @@
 
 env
 
-rm -rf ${WORKSPACE}/cbbuild
-git clone https://github.com/kimtrang/build.git cbbuild
-
 # Global define
 PRODUCT=${1}
 BLD_NUM=${2}
 VERSION=${3}
+EDITION=${4}
 
 if [[ -z "${WORKSPACE}" ]]; then
     WORKSPACE=`pwd`
@@ -20,25 +18,25 @@ case "${OSTYPE}" in
     darwin*)  OS="macosx"
               PKG_CMD='zip -r'
               PKG_TYPE='zip'
-              PROP_FILE=${WORKSPACE}/publish.prop
+              PROP_FILE=${WORKSPACE}/publish_${EDITION}.prop
               if [[ ${TVOS} == 'true' ]]; then
                   OS="macosx-tvos"
                   BUILD_TVOS_REL_TARGET='build_tvos_release'
                   BUILD_TVOS_DEBUG_TARGET='build_tvos_debug'
-                  PROP_FILE=${WORKSPACE}/publish_tvos.prop
+                  PROP_FILE=${WORKSPACE}/publish_${EDITION}_tvos.prop
                   mkdir -p ${WORKSPACE}/${BUILD_TVOS_REL_TARGET} ${WORKSPACE}/${BUILD_TVOS_DEBUG_TARGET}
               fi
               if [[ ${IOS} == 'true' ]]; then
                   OS="macosx-ios"
                   BUILD_IOS_REL_TARGET='build_ios_release'
                   BUILD_IOS_DEBUG_TARGET='build_ios_debug'
-                  PROP_FILE=${WORKSPACE}/publish_ios.prop
+                  PROP_FILE=${WORKSPACE}/publish_${EDITION}_ios.prop
                   mkdir -p ${WORKSPACE}/${BUILD_IOS_REL_TARGET} ${WORKSPACE}/${BUILD_IOS_DEBUG_TARGET}
               fi;;
     linux*)   OS="linux"
               PKG_CMD='tar czf'
               PKG_TYPE='tar.gz'
-              PROP_FILE=${WORKSPACE}/publish.prop
+              PROP_FILE=${WORKSPACE}/publish_${EDITION}.prop
     *)        echo "unknown: $OSTYPE"
               exit 1;;
 esac
