@@ -36,7 +36,7 @@ case "${OSTYPE}" in
     linux*)   OS="linux"
               PKG_CMD='tar czf'
               PKG_TYPE='tar.gz'
-              PROP_FILE=${WORKSPACE}/publish_${EDITION}.prop
+              PROP_FILE=${WORKSPACE}/publish_${EDITION}.prop;;
     *)        echo "unknown: $OSTYPE"
               exit 1;;
 esac
