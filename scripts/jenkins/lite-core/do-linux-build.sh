@@ -161,6 +161,9 @@ do
             cd ${WORKSPACE}/build_${FLAVOR}/install
             # Create separate symbols pkg
             if [[ ${OS} == 'macosx' ]]; then
+                if [[ ${EDITION} == 'enterprise' ]]; then
+                    cp libLiteCoreSync_EE.dylib lib
+                fi
                 ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} lib/${macosx_lib}
                 SYMBOLS_DEBUG_PKG_NAME=${PRODUCT}-${OS}-${VERSION}-${FLAVOR}-'symbols'.${PKG_TYPE}
                 ${PKG_CMD} ${WORKSPACE}/${SYMBOLS_DEBUG_PKG_NAME}  lib/libLiteCore.dylib.dSYM
@@ -193,6 +196,9 @@ do
             cd ${WORKSPACE}/build_${FLAVOR}/install
             # Create separate symbols pkg
             if [[ ${OS} == 'macosx' ]]; then
+                if [[ ${EDITION} == 'enterprise' ]]; then
+                    cp libLiteCoreSync_EE.dylib lib
+                fi
                 ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} lib/${macosx_lib}
                 SYMBOLS_RELEASE_PKG_NAME=${PRODUCT}-${OS}-${VERSION}-${FLAVOR}-'symbols'.${PKG_TYPE}
                 ${PKG_CMD} ${WORKSPACE}/${SYMBOLS_RELEASE_PKG_NAME}  lib/libLiteCore.dylib.dSYM
