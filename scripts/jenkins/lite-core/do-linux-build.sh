@@ -43,8 +43,10 @@ esac
 
 if [[ $EDITION == 'enterprise' ]]; then
     project_dir=couchbase-lite-core-EE
+    macosx_lib=libLiteCoreSync_EE.dylib
 else
     project_dir=couchbase-lite-core
+    macosx_lib=libLiteCore.dylib
 fi
 
 echo VERSION=${VERSION}
@@ -78,8 +80,8 @@ else
         ${WORKSPACE}/couchbase-lite-core/build_cmake/scripts/strip.sh ${project_dir}
     else
         pushd ${project_dir}
-        dsymutil libLiteCore.dylib -o libLiteCore.dylib.dSYM
-        strip -x libLiteCore.dylib
+        dsymutil ${macosx_lib} -o libLiteCore.dylib.dSYM
+        strip -x ${macosx_lib}
         popd
     fi
     make install
@@ -122,8 +124,8 @@ else
         ${WORKSPACE}/couchbase-lite-core/build_cmake/scripts/strip.sh ${project_dir}
     else
         pushd ${project_dir}
-        dsymutil libLiteCore.dylib -o libLiteCore.dylib.dSYM
-        strip -x libLiteCore.dylib
+        dsymutil ${macosx_lib} -o libLiteCore.dylib.dSYM
+        strip -x ${macosx_lib}
         popd
     fi
     make install
@@ -159,7 +161,7 @@ do
             cd ${WORKSPACE}/build_${FLAVOR}/install
             # Create separate symbols pkg
             if [[ ${OS} == 'macosx' ]]; then
-                ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} lib/libLiteCore.dylib
+                ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} lib/${macosx_lib}
                 SYMBOLS_DEBUG_PKG_NAME=${PRODUCT}-${OS}-${VERSION}-${FLAVOR}-'symbols'.${PKG_TYPE}
                 ${PKG_CMD} ${WORKSPACE}/${SYMBOLS_DEBUG_PKG_NAME}  lib/libLiteCore.dylib.dSYM
             else # linux
@@ -191,7 +193,7 @@ do
             cd ${WORKSPACE}/build_${FLAVOR}/install
             # Create separate symbols pkg
             if [[ ${OS} == 'macosx' ]]; then
-                ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} lib/libLiteCore.dylib
+                ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} lib/${macosx_lib}
                 SYMBOLS_RELEASE_PKG_NAME=${PRODUCT}-${OS}-${VERSION}-${FLAVOR}-'symbols'.${PKG_TYPE}
                 ${PKG_CMD} ${WORKSPACE}/${SYMBOLS_RELEASE_PKG_NAME}  lib/libLiteCore.dylib.dSYM
             else # linux
