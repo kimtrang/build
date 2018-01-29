@@ -64,8 +64,8 @@ if [[ ${TVOS} == 'true' ]]; then
 elif [[ ${IOS} == 'true' ]]; then
     echo "====  Building ios Release binary  ==="
     cd ${WORKSPACE}/${BUILD_IOS_REL_TARGET}
-    xcodebuild -project ${WORKSPACE}/${ios_xcode_proj} -configuration Release -derivedDataPath ios -scheme "LiteCore dylib" -sdk iphoneos BITCODE_GENERATION_MODE=bitcode CODE_SIGNING_ALLOWED=NO
-    xcodebuild -project ${WORKSPACE}/${ios_xcode_proj} -configuration Release -derivedDataPath ios -scheme "LiteCore dylib" -sdk iphonesimulator CODE_SIGNING_ALLOWED=NO
+    xcodebuild -project "${WORKSPACE}/${ios_xcode_proj}" -configuration Release -derivedDataPath ios -scheme "LiteCore dylib" -sdk iphoneos BITCODE_GENERATION_MODE=bitcode CODE_SIGNING_ALLOWED=NO
+    xcodebuild -project "${WORKSPACE}/${ios_xcode_proj}" -configuration Release -derivedDataPath ios -scheme "LiteCore dylib" -sdk iphonesimulator CODE_SIGNING_ALLOWED=NO
     lipo -create ios/Build/Products/Release-iphoneos/libLiteCore.dylib ios/Build/Products/Release-iphonesimulator/libLiteCore.dylib -output ${WORKSPACE}/${BUILD_IOS_REL_TARGET}/libLiteCore.dylib
     cd ${WORKSPACE}
 else
