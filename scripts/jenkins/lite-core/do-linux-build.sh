@@ -164,11 +164,11 @@ do
                 ${PKG_CMD} ${WORKSPACE}/${SYMBOLS_DEBUG_PKG_NAME}  lib/libLiteCore.dylib.dSYM
             else # linux
                 ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} *
-#                if [[ ${EDITION} == 'community' ]]; then
+                if [[ ${EDITION} == 'community' ]]; then
                     SYMBOLS_DEBUG_PKG_NAME=${PRODUCT}-${OS}-${VERSION}-${FLAVOR}-'symbols'.${PKG_TYPE}
                     cd ${WORKSPACE}/build_${FLAVOR}/${project_dir}
                     ${PKG_CMD} ${WORKSPACE}/${SYMBOLS_DEBUG_PKG_NAME} libLiteCore*.sym
-#                fi
+                fi
             fi
             cd ${WORKSPACE}
         fi
@@ -193,11 +193,11 @@ do
                 ${PKG_CMD} ${WORKSPACE}/${SYMBOLS_RELEASE_PKG_NAME}  lib/libLiteCore.dylib.dSYM
             else # linux
                 ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} *
-#                if [[ ${EDITION} == 'community' ]]; then
+                if [[ ${EDITION} == 'community' ]]; then
                     SYMBOLS_RELEASE_PKG_NAME=${PRODUCT}-${OS}-${VERSION}-${FLAVOR}-'symbols'.${PKG_TYPE}
                     cd ${WORKSPACE}/build_${FLAVOR}/${project_dir}
                     ${PKG_CMD} ${WORKSPACE}/${SYMBOLS_RELEASE_PKG_NAME} libLiteCore*.sym
-#                fi
+                fi
             fi
             cd ${WORKSPACE}
         fi
