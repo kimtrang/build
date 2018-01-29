@@ -41,7 +41,7 @@ case "${OSTYPE}" in
               exit 1;;
 esac
 
-if [[ $EDITION == 'enterprise' ]]; then
+if [[ ${EDITION} == 'enterprise' ]]; then
     project_dir=couchbase-lite-core-EE
     macosx_lib=libLiteCoreSync_EE.dylib
 else
@@ -131,7 +131,7 @@ else
     make install
     # package up the strip symbols
     if [[ ${OS} == 'macosx' ]]; then
-        cp -rp couchbase-lite-core/libLiteCore.dylib.dSYM  ./install/lib
+        cp -rp ${project_dir}/libLiteCore.dylib.dSYM  ./install/lib
     fi
     cd ${WORKSPACE}
 fi
