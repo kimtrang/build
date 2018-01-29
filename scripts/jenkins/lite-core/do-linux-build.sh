@@ -44,9 +44,11 @@ esac
 if [[ ${EDITION} == 'enterprise' ]]; then
     project_dir=couchbase-lite-core-EE
     macosx_lib=libLiteCoreSync_EE.dylib
+    ios_xcode_proj="couchbase-lite-core-EE/LiteCore EE.xcodeproj"
 else
     project_dir=couchbase-lite-core
     macosx_lib=libLiteCore.dylib
+    ios_xcode_proj="couchbase-lite-core/Xcode/LiteCore.xcodeproj"
 fi
 
 echo VERSION=${VERSION}
@@ -62,8 +64,8 @@ if [[ ${TVOS} == 'true' ]]; then
 elif [[ ${IOS} == 'true' ]]; then
     echo "====  Building ios Release binary  ==="
     cd ${WORKSPACE}/${BUILD_IOS_REL_TARGET}
-    xcodebuild -project ${WORKSPACE}/couchbase-lite-core/Xcode/LiteCore.xcodeproj -configuration Release -derivedDataPath ios -scheme "LiteCore dylib" -sdk iphoneos BITCODE_GENERATION_MODE=bitcode CODE_SIGNING_ALLOWED=NO
-    xcodebuild -project ${WORKSPACE}/couchbase-lite-core/Xcode/LiteCore.xcodeproj -configuration Release -derivedDataPath ios -scheme "LiteCore dylib" -sdk iphonesimulator CODE_SIGNING_ALLOWED=NO
+    xcodebuild -project ${WORKSPACE}/${ios_xcode_proj} -configuration Release -derivedDataPath ios -scheme "LiteCore dylib" -sdk iphoneos BITCODE_GENERATION_MODE=bitcode CODE_SIGNING_ALLOWED=NO
+    xcodebuild -project ${WORKSPACE}/${ios_xcode_proj} -configuration Release -derivedDataPath ios -scheme "LiteCore dylib" -sdk iphonesimulator CODE_SIGNING_ALLOWED=NO
     lipo -create ios/Build/Products/Release-iphoneos/libLiteCore.dylib ios/Build/Products/Release-iphonesimulator/libLiteCore.dylib -output ${WORKSPACE}/${BUILD_IOS_REL_TARGET}/libLiteCore.dylib
     cd ${WORKSPACE}
 else
@@ -106,8 +108,8 @@ if [[ ${TVOS} == 'true' ]]; then
 elif [[ ${IOS} == 'true' ]]; then
     echo "====  Building ios Debug binary  ==="
     cd ${WORKSPACE}/${BUILD_IOS_DEBUG_TARGET}
-    xcodebuild -project ${WORKSPACE}/couchbase-lite-core/Xcode/LiteCore.xcodeproj -configuration Debug -derivedDataPath ios -scheme "LiteCore dylib" -sdk iphoneos BITCODE_GENERATION_MODE=bitcode CODE_SIGNING_ALLOWED=NO
-    xcodebuild -project ${WORKSPACE}/couchbase-lite-core/Xcode/LiteCore.xcodeproj -configuration Debug -derivedDataPath ios -scheme "LiteCore dylib" -sdk iphonesimulator CODE_SIGNING_ALLOWED=NO
+    xcodebuild -project ${WORKSPACE}/${ios_xcode_proj} -configuration Debug -derivedDataPath ios -scheme "LiteCore dylib" -sdk iphoneos BITCODE_GENERATION_MODE=bitcode CODE_SIGNING_ALLOWED=NO
+    xcodebuild -project ${WORKSPACE}/${ios_xcode_proj} -configuration Debug -derivedDataPath ios -scheme "LiteCore dylib" -sdk iphonesimulator CODE_SIGNING_ALLOWED=NO
     lipo -create ios/Build/Products/Debug-iphoneos/libLiteCore.dylib ios/Build/Products/Debug-iphonesimulator/libLiteCore.dylib -output ${WORKSPACE}/${BUILD_IOS_DEBUG_TARGET}/libLiteCore.dylib
     cd ${WORKSPACE}
 else
