@@ -92,7 +92,7 @@ do
     else
         cd ${WORKSPACE}/${BUILD_REL_TARGET}/install
         if [[ ${EDITION} == 'enterprise' ]]; then
-            cp ${WORKSPACE}/${BUILD_DEBUG_TARGET}/${project_dir}/${android_lib} lib/${android_lib}
+            cp ${WORKSPACE}/${BUILD_REL_TARGET}/${project_dir}/${android_lib} lib/${android_lib}
         fi
         ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} *
         RELEASE_PKG_NAME=${PACKAGE_NAME}
