@@ -5,6 +5,7 @@ PRODUCT=${1}
 VERSION=${2}
 BLD_NUM=${3}
 ARCH=${4}
+EDITION=${5}
 
 PKG_TYPE='zip'
 PKG_CMD='zip -r'
