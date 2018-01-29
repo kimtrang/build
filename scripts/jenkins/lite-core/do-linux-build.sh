@@ -101,7 +101,7 @@ fi
 if [[ ${TVOS} == 'true' ]]; then
     echo "====  Building tvos Debug binary  ==="
     cd ${WORKSPACE}/${BUILD_TVOS_DEBUG_TARGET}
-    xcodebuild -project  "${WORKSPACE}/couchbase-lite-core/Xcode/LiteCore.xcodeproj -configuration Debug -derivedDataPath tvos -scheme "LiteCore dylib" -sdk appletvos
+    xcodebuild -project ${WORKSPACE}/couchbase-lite-core/Xcode/LiteCore.xcodeproj -configuration Debug -derivedDataPath tvos -scheme "LiteCore dylib" -sdk appletvos
     xcodebuild -project ${WORKSPACE}/couchbase-lite-core/Xcode/LiteCore.xcodeproj -configuration Debug -derivedDataPath tvos -scheme "LiteCore dylib" -sdk appletvsimulator
     lipo -create tvos/Build/Products/Debug-appletvos/libLiteCore.dylib tvos/Build/Products/Debug-appletvsimulator/libLiteCore.dylib -output ${WORKSPACE}/${BUILD_TVOS_DEBUG_TARGET}/libLiteCore.dylib
     cd ${WORKSPACE}
