@@ -71,7 +71,7 @@ goto :EOF
 rem subroutine "bld_store"
 :bld_store
 echo Building blddir:%1, arch:%2, flavor:%3
-set CMAKE_COMMON_OPTIONS=-DEDITION=%EDITION% -DCMAKE_SYSTEM_NAME=WindowsStore -DCMAKE_SYSTEM_VERSION=10.0.14393.0 -DCMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION=10.0.10240.0
+set CMAKE_COMMON_OPTIONS=-DCMAKE_SYSTEM_NAME=WindowsStore -DCMAKE_SYSTEM_VERSION=10.0.14393.0 -DCMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION=10.0.10240.0
 if "%EDITION%"=="enterprise" (
    set project_dir=couchbase-lite-core-EE
 ) else ( 
@@ -111,7 +111,7 @@ if "%2"=="Win32" (
        set MS_ARCH= Win64
     )
 )
-"C:\Program Files\CMake\bin\cmake.exe" -G "Visual Studio 14 2015%MS_ARCH%" -DEDITION=%EDITION% ..\%project_dir% || goto :error
+"C:\Program Files\CMake\bin\cmake.exe" -G "Visual Studio 14 2015%MS_ARCH%" ..\%project_dir% || goto :error
 "C:\Program Files\CMake\bin\cmake.exe" --build . --config %3 || goto :error
 goto :EOF
 
