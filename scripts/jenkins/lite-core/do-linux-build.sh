@@ -166,7 +166,7 @@ do
                 if [[ ${EDITION} == 'enterprise' ]]; then
                     cp ${WORKSPACE}/build_${FLAVOR}/${project_dir}/libLiteCoreSync_EE.dylib lib/libLiteCoreSync_EE.dylib
                 fi
-                ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} lib/${macosx_lib}
+                ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} lib/libLiteCore*.dylib
                 SYMBOLS_DEBUG_PKG_NAME=${PRODUCT}-${OS}-${VERSION}-${FLAVOR}-'symbols'.${PKG_TYPE}
                 ${PKG_CMD} ${WORKSPACE}/${SYMBOLS_DEBUG_PKG_NAME}  lib/libLiteCore.dylib.dSYM
             else # linux
@@ -201,7 +201,7 @@ do
                 if [[ ${EDITION} == 'enterprise' ]]; then
                     cp ${WORKSPACE}/build_${FLAVOR}/${project_dir}/libLiteCoreSync_EE.dylib lib/libLiteCoreSync_EE.dylib
                 fi
-                ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} lib/${macosx_lib}
+                ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} lib/libLiteCore*.dylib
                 SYMBOLS_RELEASE_PKG_NAME=${PRODUCT}-${OS}-${VERSION}-${FLAVOR}-'symbols'.${PKG_TYPE}
                 ${PKG_CMD} ${WORKSPACE}/${SYMBOLS_RELEASE_PKG_NAME}  lib/libLiteCore.dylib.dSYM
             else # linux
