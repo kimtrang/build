@@ -10,6 +10,7 @@ import time
 import argparse
 from argparse import RawTextHelpFormatter
 
+
 def update_scan_url(qgc, current_time, args):
     ''' Update WAS scan Name and IP/URL '''
 
@@ -70,13 +71,15 @@ def scan_report(qgc, current_time, args, scan_id):
     <isDefault>true</isDefault>
     </webAppAuthRecord>
     <scannerAppliance>
-    <type>EXTERNAL</type>
+    <type>INTERNAL</type>
+    <friendlyName>CB_Scanner_Xen</friendlyName>
     </scannerAppliance>
     </target>
     <profile>
     <id>165132</id>
     </profile>
     '''
+
     parameters = ServiceRequest_xml_header + web_scan_name + scan_type + scan_id_content + content + '\n' + ServiceRequest_xml_footer
     if args.debug:
         print
