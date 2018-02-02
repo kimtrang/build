@@ -76,7 +76,7 @@ def scan_report(qgc, current_time, args, scan_id):
     </scannerAppliance>
     </target>
     <profile>
-    <id>165132</id>
+    <id>178884</id>
     </profile>
     '''
 
