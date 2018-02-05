@@ -9,7 +9,7 @@ import datetime
 import time
 import argparse
 from argparse import RawTextHelpFormatter
-
+import logging
 
 def update_scan_url(qgc, current_time, args):
     ''' Update WAS scan Name and IP/URL '''
@@ -29,23 +29,17 @@ def update_scan_url(qgc, current_time, args):
     web_url_tag = '<url>' + args.web_url + '</url>'
     parameters = ServiceRequest_xml_header + web_name_tag + '\n' + web_url_tag + ServiceRequest_xml_footer
 
-    if args.debug:
-        print
-        print("id: {}".format(parameters))
-        print
+    logger.info('id: %s', parameters)
 
     xml_output = qgc.request(call, parameters)
     root = objectify.fromstring(xml_output)
-    if args.debug:
-        print
-        print "xml_output ..."
-        print(xml_output)
+    logger.Debug('xml_output: %s', xml_output)
 
     # Need to check update results
     if root.responseCode != 'SUCCESS':
-        print("Error Found: {}".format(root.responseErrorDetails.errorMessage.text))
+        logger.Error('Error Found: %s', root.responseErrorDetails.errorMessage.text)
     else:
-        print("Successfully updated webapp: {}".format(root.data.WebApp.id.text))
+        logger.info('Successfully updated webapp: %s', root.data.WebApp.id.text)
         return root.data.WebApp.id.text
 
 
@@ -81,26 +75,19 @@ def scan_report(qgc, current_time, args, scan_id):
     '''
 
     parameters = ServiceRequest_xml_header + web_scan_name + scan_type + scan_id_content + content + '\n' + ServiceRequest_xml_footer
-    if args.debug:
-        print
-        print("parameters: {}".format(parameters))
-        print
+    logger.debug('parameters: %s', parameters)
 
     xml_output = qgc.request(call, parameters)
     root = objectify.fromstring(xml_output)
-    if args.debug:
-        print
-        print "xml_output ..."
-        print(xml_output)
-        print
+    logger.debug('xml_output: %s', xml_output)
 
     # Need to check update results
     if root.responseCode != 'SUCCESS':
-        print("Error Found: {}".format(root.responseErrorDetails.errorMessage.text))
+        logger.Error('Error Found: %s', root.responseErrorDetails.errorMessage.text)
         sys.exit(1)
     else:
         SCAN_ID = root.data.WasScan.id.text
-        print("id: {}".format(SCAN_ID))
+        logger.info('id: %s', xml_output)
 
     # get scan status
     call = '/status/was/wasscan' + '/' + SCAN_ID
@@ -109,27 +96,23 @@ def scan_report(qgc, current_time, args, scan_id):
         scan_root = objectify.fromstring(xml_output)
         if scan_root.data.WasScan.status != 'FINISHED':
             time.sleep(180)
-            print('Sleeping 180 ...')
+            logger.info('Sleeping ... %s', sleep_time)
         else:
             break
 
+    #logger.debug('xml_output: %s', xml_output)
+
     # Need to check update results
     if scan_root.responseCode != 'SUCCESS':
-        print("Error Found: {}".format(scan_root.responseErrorDetails.errorMessage.text))
+        logger.Error('Error Found: %s', scan_root.responseErrorDetails.errorMessage.text)
         sys.exit(1)
     # elif scan_root.responseCode == 'SUCCESS' and scan_root.data.WasScan.summary is not None:
     #    print("Error Found: {}".format(scan_root.data.WasScan.summary.resultsStatus.text))
     #    sys.exit(1)
     else:
-        print("Scan finished successfully!")
-        print("Scan id: {}".format(scan_root.data.WasScan.id.text))
+        logger.info('Scan finished successfully!')
+        logger.info('Scan id: %s', scan_root.data.WasScan.id.text)
         return scan_root.data.WasScan.id.text
-
-    if args.debug:
-        print
-        print "xml_output ..."
-        print(xml_output)
-        print
 
 
 def get_report_status(qgc, report_id):
@@ -205,18 +188,14 @@ def generate_report(qgc, args, WAS_SCAN_ID):
 
     xml_output = qgc.request(call, parameters)
     root = objectify.fromstring(xml_output)
-    if args.debug:
-        print
-        print "xml_output ..."
-        print(xml_output)
-        print
+    logger.debug('xml_output: %s', xml_output)
 
     if root.responseCode != 'SUCCESS':
-        print("Error Found: {}".format(root.responseErrorDetails.errorMessage.text))
+        logger.Error('Error Found: %s', root.responseErrorDetails.errorMessage.text)
         sys.exit(1)
     else:
         REPORT_ID = root.data.Report.id.text
-        print("Report id: {}".format(REPORT_ID))
+        logger.debug('Report id: %s', REPORT_ID)
 
     # Download report
     if REPORT_ID:
@@ -226,7 +205,7 @@ def generate_report(qgc, args, WAS_SCAN_ID):
             scan_status = get_report_status(qgc, REPORT_ID)
             if scan_status != 'COMPLETE':
                 time.sleep(60)
-                print('Sleeping 60 ...')
+                logger.info('Sleeping ... %s', sleep_time)
             else:
                 break
 
@@ -234,14 +213,25 @@ def generate_report(qgc, args, WAS_SCAN_ID):
         pdf_report_name = "Scan_Report_" + args.web_name + '_' + args.bld_num + '_' + args.scan_type_name + '_' + REPORT_ID + ".pdf"
         with open(pdf_report_name, "wb") as report:
             report.write(output)
-        print("Report has been downloaded successfully: {}".format(pdf_report_name))
+        logger.info('Report has been downloaded successfully: %s', pdf_report_name)
 
 
 def main(args):
+    # logging
+    if os.environ['LOG_LEVEL'] is None:
+        os.environ['LOG_LEVEL'] = INFO
+
+    logger = logging.getLogger()
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter('%(levelname)-8s %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    logger.setLevel(logging.os.environ['LOG_LEVEL'])
+
     # Setup connection to QualysGuard API.
     qgc = qualysapi.connect('/tmp/config.txt')
     current_time = datetime.datetime.now().strftime("%Y%m%d%H%M")
-    print("Current Time: {}".format(current_time))
+    logger.debug('Current Time: %s', current_time)
     webapp_id = update_scan_url(qgc, current_time, args)
 
     scan_id = scan_report(qgc, current_time, args, webapp_id)
