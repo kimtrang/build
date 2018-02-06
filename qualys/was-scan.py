@@ -13,6 +13,17 @@ from argparse import RawTextHelpFormatter
 import logging
 
 
+# logging
+if os.environ['LOG_LEVEL'] is None:
+    os.environ['LOG_LEVEL'] = INFO
+
+    logger = logging.getLogger()
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter('%(levelname)-8s %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    logger.setLevel(logging.os.environ['LOG_LEVEL'])
+
 def update_scan_url(qgc, current_time, args):
     ''' Update WAS scan Name and IP/URL '''
 
@@ -219,16 +230,6 @@ def generate_report(qgc, args, WAS_SCAN_ID):
 
 
 def main(args):
-    # logging
-    if os.environ['LOG_LEVEL'] is None:
-        os.environ['LOG_LEVEL'] = INFO
-
-    logger = logging.getLogger()
-    handler = logging.StreamHandler()
-    formatter = logging.Formatter('%(levelname)-8s %(message)s')
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
-    logger.setLevel(logging.os.environ['LOG_LEVEL'])
 
     # Setup connection to QualysGuard API.
     qgc = qualysapi.connect('/tmp/config.txt')
