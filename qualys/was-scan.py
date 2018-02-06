@@ -5,11 +5,13 @@ from lxml import objectify
 from lxml.builder import E
 
 import sys
+import os
 import datetime
 import time
 import argparse
 from argparse import RawTextHelpFormatter
 import logging
+
 
 def update_scan_url(qgc, current_time, args):
     ''' Update WAS scan Name and IP/URL '''
