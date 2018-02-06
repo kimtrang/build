@@ -46,11 +46,11 @@ def update_scan_url(qgc, current_time, args):
 
     xml_output = qgc.request(call, parameters)
     root = objectify.fromstring(xml_output)
-    logger.Debug('xml_output: %s', xml_output)
+    logger.info('xml_output: %s', xml_output)
 
     # Need to check update results
     if root.responseCode != 'SUCCESS':
-        logger.Error('Error Found: %s', root.responseErrorDetails.errorMessage.text)
+        logger.error('Error Found: %s', root.responseErrorDetails.errorMessage.text)
     else:
         logger.info('Successfully updated webapp: %s', root.data.WebApp.id.text)
         return root.data.WebApp.id.text
@@ -96,7 +96,7 @@ def scan_report(qgc, current_time, args, scan_id):
 
     # Need to check update results
     if root.responseCode != 'SUCCESS':
-        logger.Error('Error Found: %s', root.responseErrorDetails.errorMessage.text)
+        logger.error('Error Found: %s', root.responseErrorDetails.errorMessage.text)
         sys.exit(1)
     else:
         SCAN_ID = root.data.WasScan.id.text
@@ -117,7 +117,7 @@ def scan_report(qgc, current_time, args, scan_id):
 
     # Need to check update results
     if scan_root.responseCode != 'SUCCESS':
-        logger.Error('Error Found: %s', scan_root.responseErrorDetails.errorMessage.text)
+        logger.error('Error Found: %s', scan_root.responseErrorDetails.errorMessage.text)
         sys.exit(1)
     # elif scan_root.responseCode == 'SUCCESS' and scan_root.data.WasScan.summary is not None:
     #    print("Error Found: {}".format(scan_root.data.WasScan.summary.resultsStatus.text))
@@ -204,7 +204,7 @@ def generate_report(qgc, args, WAS_SCAN_ID):
     logger.debug('xml_output: %s', xml_output)
 
     if root.responseCode != 'SUCCESS':
-        logger.Error('Error Found: %s', root.responseErrorDetails.errorMessage.text)
+        logger.error('Error Found: %s', root.responseErrorDetails.errorMessage.text)
         sys.exit(1)
     else:
         REPORT_ID = root.data.Report.id.text
