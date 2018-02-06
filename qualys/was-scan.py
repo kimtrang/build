@@ -104,11 +104,12 @@ def scan_report(qgc, current_time, args, scan_id):
 
     # get scan status
     call = '/status/was/wasscan' + '/' + SCAN_ID
+    sleep_time = 180
     while True:
         xml_output = qgc.request(call)
         scan_root = objectify.fromstring(xml_output)
         if scan_root.data.WasScan.status != 'FINISHED':
-            time.sleep(180)
+            time.sleep(sleep_time)
             logger.info('Sleeping ... %s', sleep_time)
         else:
             break
@@ -213,11 +214,12 @@ def generate_report(qgc, args, WAS_SCAN_ID):
     # Download report
     if REPORT_ID:
         call = '/download/was/report/' + REPORT_ID
+        sleep_time = 60
         while True:
             # get report status
             scan_status = get_report_status(qgc, REPORT_ID)
             if scan_status != 'COMPLETE':
-                time.sleep(60)
+                time.sleep(sleep_time)
                 logger.info('Sleeping ... %s', sleep_time)
             else:
                 break
