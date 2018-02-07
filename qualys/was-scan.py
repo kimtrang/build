@@ -14,8 +14,8 @@ import logging
 
 
 # logging
-if os.environ['LOG_LEVEL'] is None:
-    os.environ['LOG_LEVEL'] = INFO
+if os.getenv('LOG_LEVEL') is None:
+    os.environ['LOG_LEVEL'] = 'INFO'
 
 logger = logging.getLogger()
 handler = logging.StreamHandler()
@@ -83,11 +83,10 @@ def scan_report(qgc, current_time, args, scan_id):
     </scannerAppliance>
     </target>
     <profile>
-    <id>165132</id>
-    </profile>
     '''
+    profile_id = '<id>' + args.profile_id  + '</id> </profile>'
 
-    parameters = ServiceRequest_xml_header + web_scan_name + scan_type + scan_id_content + content + '\n' + ServiceRequest_xml_footer
+    parameters = ServiceRequest_xml_header + web_scan_name + scan_type + scan_id_content + content + profile_id + '\n' + ServiceRequest_xml_footer
     logger.debug('parameters: %s', parameters)
 
     xml_output = qgc.request(call, parameters)
@@ -248,6 +247,7 @@ if __name__ == "__main__":
     parser.add_argument('--web-url', help="Host IP:port or Web URL:port.  e.g. http://ec2-54-187-77-59.us-west-2.compute.amazonaws.com:4984/\n", required=True)
     parser.add_argument('--webapp-id', help="WebApp ID. e.g. CBServer5.0: 2695834, SGW1.5.0:3084099 \n", required=True)
     parser.add_argument('--web-name', help="WebApp Name. e.g. SGW-1.5.0, Couchbase Server 5.0.0\n", required=True)
+    parser.add_argument('--profile-id', help="Profile id to scan\n", required=True)
     parser.add_argument('--scan-type-name', help="VULNERABILITY or DISCOVERY\n", required=True)
     parser.add_argument('--bld-num', help="Jenkins build number\n", required=True)
     parser.add_argument('--debug', action='store_true', help="Print extra debug info\n")
