@@ -38,7 +38,7 @@ def update_scan_url(qgc, current_time, args):
             </data>
     </ServiceRequest>
     '''
-    web_name_tag = '<name>' + args.web_name + ' - ' + ' WAS Scan Launch From API - ' + current_time + '</name>' + '\n'
+    web_name_tag = '<name>' + args.web_name + ' - ' + args.scan_type_name + ' WAS Scan Launch From API - ' + current_time + '</name>' + '\n'
     web_url_tag = '<url>' + args.web_url + '</url>'
     parameters = ServiceRequest_xml_header + web_name_tag + '\n' + web_url_tag + ServiceRequest_xml_footer
 
