@@ -233,7 +233,7 @@ def generate_report(qgc, args, WAS_SCAN_ID):
 def main(args):
 
     # Setup connection to QualysGuard API.
-    qgc = qualysapi.connect('/tmp/config.txt')
+    qgc = qualysapi.connect('/tmp/config.txt' + "." + args.bld_num)
     current_time = datetime.datetime.now().strftime("%Y%m%d%H%M")
     logger.debug('Current Time: %s', current_time)
     webapp_id = update_scan_url(qgc, current_time, args)
