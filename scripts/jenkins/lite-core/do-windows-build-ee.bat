@@ -128,6 +128,14 @@ if not exist "%1\C\tests\data\names_300000.json" (
     copy %WORKSPACE%\couchbase-lite-core\C\tests\data\names_300000.json  %1\C\tests\data\names_300000.json
 )
 
+if "%EDITION%"=="enterprise" (
+    set cpp_test_path=%1\couchbase-lite-core\LiteCore\tests\RelWithDebInfo
+    set c4_test_path=%1\couchbase-lite-core\C\tests\RelWithDebInfo
+) else  (
+    set cpp_test_path=%1\LiteCore\tests\RelWithDebInfo
+    set c4_test_path=%1\C\tests\RelWithDebInfo
+)
+
 cd %1\LiteCore\tests\RelWithDebInfo
 .\CppTests.exe -r list || exit /b 1
 
