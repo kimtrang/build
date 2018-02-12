@@ -141,7 +141,7 @@ if "%EDITION%"=="enterprise" (
 cd %cpp_test_path%
 .\CppTests.exe -r list || exit /b 1
 
-cd %cpp_test_path%
+cd %c4_test_path%
 .\C4Tests.exe -r list || exit /b 1
 goto :EOF
 
