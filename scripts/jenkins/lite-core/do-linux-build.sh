@@ -93,7 +93,7 @@ else
     fi
     if [[ -z ${SKIP_TESTS} ]] && [[ ${EDITION} == 'enterprise' ]]; then
         chmod 777 ${WORKSPACE}/couchbase-lite-core/build_cmake/scripts/test_unix.sh
-        cd ${WORKSPACE}/build_release/${project_dir} && ../../couchbase-lite-core/build_cmake/scripts/test_unix.sh
+        cd ${WORKSPACE}/build_release/${project_dir}/couchbase-lite-core && ../../couchbase-lite-core/build_cmake/scripts/test_unix.sh
     fi
     cd ${WORKSPACE}
 fi
