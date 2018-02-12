@@ -91,7 +91,7 @@ else
     if [[ ${OS} == 'macosx' ]]; then
         cp -rp ${project_dir}/libLiteCore.dylib.dSYM  ./install/lib
     fi
-    if [[ -z ${SKIP_TESTS} ]] && [[ ${EDITION} == 'enterprise' ]]; then
+    if [[ -z ${SKIP_TESTS} ]] && [[ ${EDITION} == 'community' ]]; then
         chmod 777 ${WORKSPACE}/couchbase-lite-core/build_cmake/scripts/test_unix.sh
         cd ${WORKSPACE}/build_release/${project_dir} && ../../couchbase-lite-core/build_cmake/scripts/test_unix.sh
     fi
