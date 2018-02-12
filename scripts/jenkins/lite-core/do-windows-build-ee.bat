@@ -39,7 +39,9 @@ for %%A in (Win32 Win64 ARM) do (
         set TARGET=!ARCH!_RelWithDebInfo
         call :bld_store %WORKSPACE%\build_cmake_store_!TARGET! !ARCH! RelWithDebInfo || goto :error
         call :bld %WORKSPACE%\build_!TARGET! !ARCH! RelWithDebInfo || goto :error
-        call :unit-test %WORKSPACE%\build_!TARGET!  !ARCH! || goto :error
+        if "%EDITION%"=="enterprise" (
+            call :unit-test %WORKSPACE%\build_!TARGET!  !ARCH! || goto :error
+        )
         if "!ARCH!"=="Win32" (
             call :pkg %WORKSPACE%\build_cmake_store_!TARGET!\RelWithDebInfo %PRODUCT%-%VERSION%-%SHA_VERSION%-%OS%-win32-winstore.zip *.dll *.pdb STORE_Win32 RELEASE || goto :error
             call :pkg %WORKSPACE%\build_!TARGET!\RelWithDebInfo %PRODUCT%-%VERSION%-%SHA_VERSION%-%OS%-win32.zip *.dll *.pdb Win32 RELEASE || goto :error
@@ -136,10 +138,10 @@ if "%EDITION%"=="enterprise" (
     set c4_test_path=%1\C\tests\RelWithDebInfo
 )
 
-cd %1\LiteCore\tests\RelWithDebInfo
+cd %cpp_test_path%
 .\CppTests.exe -r list || exit /b 1
 
-cd %1\C\tests\RelWithDebInfo
+cd %cpp_test_path%
 .\C4Tests.exe -r list || exit /b 1
 goto :EOF
 
