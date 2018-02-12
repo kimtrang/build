@@ -174,11 +174,11 @@ do
                     cp ${WORKSPACE}/build_${FLAVOR}/${project_dir}/libLiteCoreSync_EE.so ${WORKSPACE}/build_${FLAVOR}/install/lib/libLiteCoreSync_EE.so
                 fi
                 ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} *
-                #if [[ ${EDITION} == 'community' ]]; then
+                if [[ ${EDITION} == 'community' ]]; then
                     SYMBOLS_DEBUG_PKG_NAME=${PRODUCT}-${OS}-${VERSION}-${FLAVOR}-'symbols'.${PKG_TYPE}
                     cd ${WORKSPACE}/build_${FLAVOR}/${project_dir}
                     ${PKG_CMD} ${WORKSPACE}/${SYMBOLS_DEBUG_PKG_NAME} libLiteCore*.sym
-                #fi
+                fi
             fi
             cd ${WORKSPACE}
         fi
@@ -209,11 +209,11 @@ do
                     cp ${WORKSPACE}/build_${FLAVOR}/${project_dir}/libLiteCoreSync_EE.so ${WORKSPACE}/build_${FLAVOR}/install/lib/libLiteCoreSync_EE.so
                 fi
                 ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} *
-                #if [[ ${EDITION} == 'community' ]]; then
+                if [[ ${EDITION} == 'community' ]]; then
                     SYMBOLS_RELEASE_PKG_NAME=${PRODUCT}-${OS}-${VERSION}-${FLAVOR}-'symbols'.${PKG_TYPE}
                     cd ${WORKSPACE}/build_${FLAVOR}/${project_dir}
                     ${PKG_CMD} ${WORKSPACE}/${SYMBOLS_RELEASE_PKG_NAME} libLiteCore*.sym
-                #fi
+                fi
             fi
             cd ${WORKSPACE}
         fi
