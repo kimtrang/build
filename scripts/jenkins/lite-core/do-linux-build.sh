@@ -79,7 +79,7 @@ else
     cmake -DEDITION=${EDITION} -DCMAKE_INSTALL_PREFIX=`pwd`/install -DCMAKE_BUILD_TYPE=RelWithDebInfo ${BUILD_SQLITE}  ..
     make -j8
     if [[ ${OS} == 'linux' ]]; then
-        ${WORKSPACE}/couchbase-lite-core/build_cmake/scripts/strip.sh ${project_dir}
+        ${WORKSPACE}/couchbase-lite-core/build_cmake/scripts/strip.sh ${project_dir}/couchbase-lite-core
     else
         pushd ${project_dir}
         dsymutil ${macosx_lib} -o libLiteCore.dylib.dSYM
@@ -123,7 +123,7 @@ else
     cmake -DEDITION=${EDITION} -DCMAKE_INSTALL_PREFIX=`pwd`/install -DCMAKE_BUILD_TYPE=Debug ${BUILD_SQLITE} ..
     make -j8
     if [[ ${OS} == 'linux' ]]; then
-        ${WORKSPACE}/couchbase-lite-core/build_cmake/scripts/strip.sh ${project_dir}
+        ${WORKSPACE}/couchbase-lite-core/build_cmake/scripts/strip.sh ${project_dir}/couchbase-lite-core
     else
         pushd ${project_dir}
         dsymutil ${macosx_lib} -o libLiteCore.dylib.dSYM
