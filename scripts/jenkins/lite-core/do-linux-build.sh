@@ -45,10 +45,12 @@ if [[ ${EDITION} == 'enterprise' ]]; then
     project_dir=couchbase-lite-core-EE
     macosx_lib=libLiteCoreSync_EE.dylib
     ios_xcode_proj="couchbase-lite-core-EE/LiteCore EE.xcodeproj"
+    strip_dir=${project_dir}/couchbase-lite-core
 else
     project_dir=couchbase-lite-core
     macosx_lib=libLiteCore.dylib
     ios_xcode_proj="couchbase-lite-core/Xcode/LiteCore.xcodeproj"
+    strip_dir=${project_dir}
 fi
 
 echo VERSION=${VERSION}
@@ -79,7 +81,7 @@ else
     cmake -DEDITION=${EDITION} -DCMAKE_INSTALL_PREFIX=`pwd`/install -DCMAKE_BUILD_TYPE=RelWithDebInfo ${BUILD_SQLITE}  ..
     make -j8
     if [[ ${OS} == 'linux' ]]; then
-        ${WORKSPACE}/couchbase-lite-core/build_cmake/scripts/strip.sh ${project_dir}/couchbase-lite-core
+        ${WORKSPACE}/couchbase-lite-core/build_cmake/scripts/strip.sh ${strip_dir}
     else
         pushd ${project_dir}
         dsymutil ${macosx_lib} -o libLiteCore.dylib.dSYM
@@ -123,7 +125,7 @@ else
     cmake -DEDITION=${EDITION} -DCMAKE_INSTALL_PREFIX=`pwd`/install -DCMAKE_BUILD_TYPE=Debug ${BUILD_SQLITE} ..
     make -j8
     if [[ ${OS} == 'linux' ]]; then
-        ${WORKSPACE}/couchbase-lite-core/build_cmake/scripts/strip.sh ${project_dir}/couchbase-lite-core
+        ${WORKSPACE}/couchbase-lite-core/build_cmake/scripts/strip.sh ${strip_dir}
     else
         pushd ${project_dir}
         dsymutil ${macosx_lib} -o libLiteCore.dylib.dSYM
@@ -176,7 +178,7 @@ do
                 ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} *
                 #if [[ ${EDITION} == 'community' ]]; then
                     SYMBOLS_DEBUG_PKG_NAME=${PRODUCT}-${OS}-${VERSION}-${FLAVOR}-'symbols'.${PKG_TYPE}
-                    cd ${WORKSPACE}/build_${FLAVOR}/${project_dir}
+                    cd ${WORKSPACE}/build_${FLAVOR}/${strip_dir}
                     ${PKG_CMD} ${WORKSPACE}/${SYMBOLS_DEBUG_PKG_NAME} libLiteCore*.sym
                 #fi
             fi
@@ -211,7 +213,7 @@ do
                 ${PKG_CMD} ${WORKSPACE}/${PACKAGE_NAME} *
                 #if [[ ${EDITION} == 'community' ]]; then
                     SYMBOLS_RELEASE_PKG_NAME=${PRODUCT}-${OS}-${VERSION}-${FLAVOR}-'symbols'.${PKG_TYPE}
-                    cd ${WORKSPACE}/build_${FLAVOR}/${project_dir}
+                    cd ${WORKSPACE}/build_${FLAVOR}/${strip_dir}
                     ${PKG_CMD} ${WORKSPACE}/${SYMBOLS_RELEASE_PKG_NAME} libLiteCore*.sym
                 #fi
             fi
