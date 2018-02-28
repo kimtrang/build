@@ -1,0 +1,9 @@
+<ServiceRequest>
+<filters>
+    <Criteria field="name" operator="CONTAINS">API</Criteria>
+    <Criteria field="webApp.name" operator="CONTAINS">Couchbase</Criteria>
+    <Criteria field="status" operator="EQUALS">FINISHED</Criteria>
+    <Criteria field="launchedDate" operator="LESSER">2018-02-22T00:00:00Z</Criteria> 
+    <Criteria field="launchedDate" operator="GREATER">2018-01-20T00:00:00Z</Criteria> 
+</filters>
+</ServiceRequest>
