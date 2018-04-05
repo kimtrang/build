@@ -2,11 +2,11 @@
 # Publish built packages from latestbuilds to maven repo
 
 function usage {
-    echo -e "\nusage: ${0} product release bld_num release_version publish_url \n\n"
+    echo -e "\nusage: ${0} product release bld_num release_version publish_url repo_id \n\n"
     exit 0
 }
 
-if [ "$#" -ne 5 ]; then
+if [ "$#" -ne 6 ]; then
     usage
     exit 1
 fi
