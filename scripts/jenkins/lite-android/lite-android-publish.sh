@@ -17,10 +17,12 @@ RELEASE=${2}
 BLD_NUM=${3}
 RELEASE_VERSION=${4}
 PUBLISH_URL=${5}
+REPO_ID=${6}
 
 LATEST_URL="http://172.23.120.24/builds/latestbuilds/${PRODUCT}/${RELEASE}/${BLD_NUM}/"
 GROUPID='com.couchbase.lite'
-REPOSITORY_ID='releases'
+REPOSITORY_ID=${REPO_ID}
+#REPOSITORY_ID='releases'
 POM_FILE='default-pom.xml'
 
 if [[ ! ${PUBLISH_USERNAME} ]] || [[ ! ${PUBLISH_PASSWORD} ]]; then
