@@ -19,6 +19,8 @@ RELEASE_VERSION=${4}
 PUBLISH_URL=${5}
 REPO_ID=${6}
 
+env
+
 LATEST_URL="http://172.23.120.24/builds/latestbuilds/${PRODUCT}/${RELEASE}/${BLD_NUM}/"
 GROUPID='com.couchbase.lite'
 REPOSITORY_ID=${REPO_ID}
