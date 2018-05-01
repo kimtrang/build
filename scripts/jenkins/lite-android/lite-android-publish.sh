@@ -42,7 +42,7 @@ echo "RELEASE_VERSION: $RELEASE_VERSION"
 function update_version {
     # Update pom.xml
     echo "Update release version in ${POM_FILE} \n"
-    OLD_VERSION="2.0.0-${BLD_NUM}"
+    OLD_VERSION="${RELEASE}-${BLD_NUM}"
     sed -i.bak "s#<version>${OLD_VERSION}</version>#<version>${RELEASE_VERSION}</version>#" ${POM_FILE} || exit 1
     diff ${POM_FILE} ${POM_FILE}.bak
 }
