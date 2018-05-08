@@ -24,6 +24,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.os.environ['LOG_LEVEL'])
 
+
 def update_scan_url(qgc, current_time, args):
     ''' Update WAS scan Name and IP/URL '''
 
@@ -45,8 +46,8 @@ def update_scan_url(qgc, current_time, args):
     logger.info('id: %s', parameters)
 
     xml_output = qgc.request(call, parameters)
-    root = objectify.fromstring(xml_output)
     logger.info('xml_output: %s', xml_output)
+    root = objectify.fromstring(xml_output)
 
     # Need to check update results
     if root.responseCode != 'SUCCESS':
@@ -84,7 +85,7 @@ def scan_report(qgc, current_time, args, scan_id):
     </target>
     <profile>
     '''
-    profile_id = '<id>' + args.profile_id  + '</id> </profile>'
+    profile_id = '<id>' + args.profile_id + '</id> </profile>'
 
     parameters = ServiceRequest_xml_header + web_scan_name + scan_type + scan_id_content + content + profile_id + '\n' + ServiceRequest_xml_footer
     logger.debug('parameters: %s', parameters)
@@ -233,7 +234,7 @@ def generate_report(qgc, args, WAS_SCAN_ID):
 def main(args):
 
     # Setup connection to QualysGuard API.
-    qgc = qualysapi.connect('/tmp/config.txt' + "." + args.bld_num)
+    qgc = qualysapi.connect(args.qualys_config)
     current_time = datetime.datetime.now().strftime("%Y%m%d%H%M")
     logger.debug('Current Time: %s', current_time)
     webapp_id = update_scan_url(qgc, current_time, args)
@@ -250,6 +251,7 @@ if __name__ == "__main__":
     parser.add_argument('--profile-id', help="Profile id to scan\n", required=True)
     parser.add_argument('--scan-type-name', help="VULNERABILITY or DISCOVERY\n", required=True)
     parser.add_argument('--bld-num', help="Jenkins build number\n", required=True)
+    parser.add_argument('--qualys-config', help="Qualys API config filen\n", required=True)
     parser.add_argument('--debug', action='store_true', help="Print extra debug info\n")
 
     args = parser.parse_args()
