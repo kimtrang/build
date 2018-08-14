@@ -84,12 +84,15 @@ case "$PRODUCT" in
         REL_DIRNAME=macosx
         S3_REL_DIRNAME=couchbase-lite/macosx
         ;;
-    *android)
+    couchbase-lite-android)
         if [[ ${RELEASE} == 1.* ]]; then
             S3_REL_DIRNAME=couchbase-lite/android
         else
             S3_REL_DIRNAME=couchbase-lite-android
         fi
+        ;;
+    couchbase-lite-android-ee)
+        S3_REL_DIRNAME=couchbase-lite-android-ee
         ;;
     *java)
         S3_REL_DIRNAME=couchbase-lite/java
@@ -117,7 +120,7 @@ RELEASE_DIR=${REL_MOUNT}/mobile/${S3_REL_DIRNAME}/${VERSION}
 if [[ ${PRODUCT} == *ios ]] && [[ ${RELEASE} == 1.* ]]; then
     SRC_DIR=${LB_MOUNT}/${PRODUCT}/${RELEASE}/${REL_DIRNAME}/${BLD_NUM}
 elif [[ ${PRODUCT} == couchbase-lite-net ]]; then
-    SRC_DIR=${LB_MOUNT}/${PRODUCT}/${RELEASE}/${REL_DIRNAME}/${BLD_NUM}/release
+    SRC_DIR=${LB_MOUNT}/${PRODUCT}/${RELEASE}/${BLD_NUM}/release
 else
     SRC_DIR=${LB_MOUNT}/${PRODUCT}/${RELEASE}/${BLD_NUM}
 fi
@@ -185,3 +188,4 @@ for fl in $FILES; do
 done
 
 get_s3_upload_link
+
