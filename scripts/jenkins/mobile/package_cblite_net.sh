@@ -96,8 +96,9 @@ then
 fi
 
 echo ======== Import Bin Packages =============================
-if [[ -d ${STAGING_DST} ]] ; then  rm -rf ${STAGING_DST} ; fi
-cp -r ${STAGING_SRC}  ${BASE_DIR}
+#if [[ -d ${STAGING_DST} ]] ; then  rm -rf ${STAGING_DST} ; fi
+#cp -r ${STAGING_SRC}  ${BASE_DIR}
+ls -la ${BASE_DIR}
 
 cd ${STAGING_DST}
 
@@ -125,8 +126,8 @@ for nupkg in "${NUGET_PKGS[@]}"
     fi
 done
 
-echo ======== Clean up remote staging =============================
-rm -rf ${STAGING_SRC}
+#echo ======== Clean up remote staging =============================
+#rm -rf ${STAGING_SRC}
 
 echo ======== Copy nuget packages for release =============================
 if [[ -d ${REL_DIR} ]] ; then  rm -rf ${REL_DIR} ; fi
