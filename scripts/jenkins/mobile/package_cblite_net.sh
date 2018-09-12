@@ -52,6 +52,7 @@ BASE_DIR=${PROD_DIR}/${BASE_DIRNAME}
 REL_DIR=${BASE_DIR}/release
 STAGING_DST=${BASE_DIR}/staging
 STAGING_SRC=${WORKSPACE}/${VERSION}/packaging/couchbase-lite-net-tmp/staging
+STAGING_SRC_TMP=${WORKSPACE}/${VERSION}/packaging/couchbase-lite-net-tmp
 #STAGING_SRC=/latestbuilds/couchbase-lite-net/${VERSION}/${BLD_NUM}/staging
 
 BUILD_PKGS=("Couchbase.Lite" "Couchbase.Lite.Listener" "Couchbase.Lite.Listener.Bonjour" "Couchbase.Lite.Storage.SystemSQLite" "Couchbase.Lite.Storage.SQLCipher" "Couchbase.Lite.Storage.ForestDB")
@@ -99,6 +100,10 @@ fi
 
 echo ======== Import Bin Packages =============================
 if [[ -d ${STAGING_DST} ]] ; then  rm -rf ${STAGING_DST} ; fi
+# grap staging dir from /latestbuilds
+pushd ${STAGING_SRC_TMP}
+wget -r -nH --cut-dirs=5 --no-parent --reject="index.html*"   http://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-lite-net/${VERSION}/${BLD_NUM}/staging
+popd
 cp -r ${STAGING_SRC}  ${BASE_DIR}
 ls -la ${BASE_DIR}
 
