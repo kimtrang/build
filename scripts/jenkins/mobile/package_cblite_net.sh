@@ -100,6 +100,7 @@ fi
 
 echo ======== Import Bin Packages =============================
 if [[ -d ${STAGING_DST} ]] ; then  rm -rf ${STAGING_DST} ; fi
+if [[ ! -d ${STAGING_SRC_TMP} ]] ; then  mkdir -p ${STAGING_SRC_TMP} ; fi
 # grap staging dir from /latestbuilds
 pushd ${STAGING_SRC_TMP}
 wget -r -nH --cut-dirs=5 --no-parent --reject="index.html*"   http://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-lite-net/${VERSION}/${BLD_NUM}/staging
@@ -134,7 +135,7 @@ for nupkg in "${NUGET_PKGS[@]}"
 done
 
 echo ======== Clean up remote staging =============================
-rm -rf ${STAGING_SRC}
+rm -rf ${STAGING_SRC} ${STAGING_SRC_TMP}
 
 echo ======== Copy nuget packages for release =============================
 if [[ -d ${REL_DIR} ]] ; then  rm -rf ${REL_DIR} ; fi
