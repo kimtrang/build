@@ -70,7 +70,8 @@ mkdir -p ${PROD_DIR}
 cd ${PROD_DIR}
 
 echo ======== sync couchbase-lite-net ===================
-if [[ ! -d couchbase-lite-net ]] ; then git clone https://github.com/couchbase/couchbase-lite-net.git ${BASE_DIRNAME}; fi
+#if [[ ! -d couchbase-lite-net ]] ; then git clone https://github.com/couchbase/couchbase-lite-net.git ${BASE_DIRNAME}; fi
+git clone https://github.com/couchbase/couchbase-lite-net.git ${BASE_DIRNAME}
 cd ${BASE_DIR}
 
 if [[ ${BRANCH} =~ "master" ]]
