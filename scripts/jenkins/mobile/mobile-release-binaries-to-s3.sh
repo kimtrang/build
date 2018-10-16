@@ -97,6 +97,9 @@ case "$PRODUCT" in
     *java)
         S3_REL_DIRNAME=couchbase-lite/java
         ;;
+    *phone)
+        S3_REL_DIRNAME=couchbase-lite-phonegap
+        ;;
     *net)
         REL_DIRNAME=couchbase-lite-net
         if [[ ${RELEASE} == 1.* ]]; then
