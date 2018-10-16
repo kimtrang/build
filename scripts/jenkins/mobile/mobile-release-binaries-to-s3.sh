@@ -97,7 +97,7 @@ case "$PRODUCT" in
     *java)
         S3_REL_DIRNAME=couchbase-lite/java
         ;;
-    *phone)
+    couchbase-lite-phonegap)
         S3_REL_DIRNAME=couchbase-lite-phonegap
         ;;
     *net)
