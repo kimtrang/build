@@ -172,7 +172,7 @@ get_s3_upload_link()
 }
 
 cd ${SRC_DIR}
-FILES=$(find * -maxdepth 0 -type f | egrep -v 'source|\.xml|\.json|\.properties|\.md5*|\.sha*|test_coverage*|CHANGELOG|changes\.log|unsigned|TestServer|debug|NEW')
+FILES=$(find * -maxdepth 0 -type f | egrep -v 'source|\.xml|\.json|\.properties|\.md5*|\.sha*|test_coverage*|CHANGELOG|changes\.log|unsigned|debug|NEW')
 TARGET_TMP_DIR=/tmp/${RELEASE}-${BLD_NUM}
 rm -rf ${TARGET_TMP_DIR} && mkdir -p ${TARGET_TMP_DIR}
 
