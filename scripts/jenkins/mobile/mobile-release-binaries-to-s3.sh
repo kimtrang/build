@@ -108,7 +108,6 @@ case "$PRODUCT" in
     *log)
         REL_DIRNAME=couchbase-lite-log
         S3_REL_DIRNAME=couchbase-lite-log
-        fi
         ;;
     couchbase-lite-phonegap)
         S3_REL_DIRNAME=couchbase-lite-phonegap
