@@ -176,7 +176,7 @@ get_s3_upload_link()
 }
 
 cd ${SRC_DIR}
-FILES=$(ls * | egrep -v 'source|\.xml|\.json|\.properties|\.md5*|\.sha*|test_coverage*|CHANGELOG|changes\.log|unsigned|CBLTestServer|debug')
+FILES=$(ls * | egrep -v 'source|\.xml|\.json|\.properties|\.md5*|\.sha*|test_coverage*|CHANGELOG|changes\.log|unsigned|CBLTestServer|debug|logtest')
 TARGET_TMP_DIR=/tmp/${RELEASE}-${BLD_NUM}
 rm -rf ${TARGET_TMP_DIR} && mkdir -p ${TARGET_TMP_DIR}
 
