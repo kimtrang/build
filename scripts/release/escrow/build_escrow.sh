@@ -141,6 +141,10 @@ download_cbdep() {
       -- deps/packages/CMakeLists.txt \
     | awk -F: '{ print $1 }' | head -1
   )
+  echo "tlmsha: cd ${ESCROW}/src/tlm && git grep -c \"_ADD_DEP_PACKAGE(${dep} ${version} .* ${cbnum})\" \
+		git grep -c \"_ADD_DEP_PACKAGE(${dep} ${version} .* ${cbnum})\" \
+		-- deps/packages/CMakeLists.txt \
+		| awk -F: '{ print $1 }' | head -1"
 
   if [ -z "${tlmsha}" ]; then
     echo "ERROR: couldn't find tlm SHA for ${dep} ${version} @${cbnum}@"
@@ -158,6 +162,7 @@ do
     grep ${platform} ${ESCROW}/src/tlm/deps/manifest.cmake |grep -v V2 \
     | awk '{sub(/\(/, "", $2); print $2 ":" $4}'
   )
+  echo "add_packs: $add_packs"
 
   # Download and keep a record of all third-party deps
   dep_manifest=${ESCROW}/deps/dep_manifest_${platform}.txt
