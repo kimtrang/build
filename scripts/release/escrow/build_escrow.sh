@@ -103,7 +103,7 @@ get_cbdep_git() {
     # them out. See https://stackoverflow.com/a/37346281/1425601 .
     mkdir ${dep}
     cd ${dep}
-    git clone --bare git://github.com/couchbasedeps/${dep} .git
+    git clone --bare git://github.com/couchbasedeps/${dep}.git
     git config core.bare false
     git checkout
   fi
