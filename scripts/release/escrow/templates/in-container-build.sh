@@ -12,9 +12,9 @@ DOCKER_PLATFORM=$1
 VERSION=$2
 
 # Convert Docker platform to Build platform (sorry they're different)
-if [ "${DOCKER_PLATFORM}" = "ubuntu14" ]
+if [ "${DOCKER_PLATFORM}" = "ubuntu18" ]
 then
-  PLATFORM=ubuntu14.04
+  PLATFORM=ubuntu18.04
 elif [ "${DOCKER_PLATFORM}" = "ubuntu16" ]
 then
   PLATFORM=ubuntu16.04
@@ -53,7 +53,7 @@ heading "Populating JDK..."
 cd ${CACHE}
 mkdir -p exploded/x86_64
 cd exploded/x86_64
-tar xf ${ROOT}/deps/jdk-8u181-linux-x64.tar.gz
+tar xf ${ROOT}/deps/jdk-11.0.1-linux-x64.tar.gz
 
 # Copy of tlm for working in.
 if [ ! -d "${TLMDIR}" ]
