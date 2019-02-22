@@ -32,7 +32,7 @@ type_traits utility variant"
 JDKVER=11
 
 # CBDDEPS
-CBDDEPS_VERSION=0.9.0
+CBDDEPS_VERSIONS=0.8.3 0.9.0 0.9.1
 
 # END normal per-version configuration variables
 
@@ -172,10 +172,10 @@ do
     download_cbdep $(echo ${add_pack} | sed 's/:/ /g') ${dep_manifest}
   done
 
-  # Ensure that snappy is built first (before python-snappy)
-  grep '^snappy' ${dep_manifest} > ${ESCROW}/deps/dep2.txt
-  grep -v '^snappy' ${dep_manifest} >> ${ESCROW}/deps/dep2.txt
-  mv ${ESCROW}/deps/dep2.txt ${dep_manifest}
+  ### Ensure that snappy is built first (before python-/snapuy)
+  ###grep '^snappy' ${dep_manifest} > ${ESCROW}/deps/dep2.txt
+  ###grep -v '^snappy' ${dep_manifest} >> ${ESCROW}/deps/dep2.txt
+  ###mv ${ESCROW}/deps/dep2.txt ${dep_manifest}
 
 done
 
@@ -188,9 +188,11 @@ jdkfile=jdk-${JDKVER}_linux-x64_bin.tar.gz
 curl -o ${ESCROW}/deps/${jdkfile} http://nas-n.mgt.couchbase.com/builds/downloads/jdk/${jdkfile}
 
 # Copy in cbdep - NEED a for loop to get all platforms
-for plat in window linux mac
+for cbdep_ver in ${CBDDEPS_VERSIONS}
 do
-  curl -o ${ESCROW}/deps/cbdep-${CBDDEPS_VERSION}-${plat} http://packages.couchbase.com/cbdep/${CBDDEPS_VERSION}/cbdep-${CBDDEPS_VERSION}-${plat}
+  curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-${window} http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-${window}
+  curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-${linux} http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-${linux}
+  curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-${mac} http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-${mac}
 done
 
 :<<'END'
