@@ -61,6 +61,19 @@ then
   cp -aL ${ROOT}/src/tlm ${TLMDIR} > /dev/null 2>&1
 fi
 
+# Pre-populate cbdeps
+heading "Populating cbdeps..."
+case ${PLATFORM} in
+  mac*) cbdeps_platform='macos' ;;
+  win*) cbdeps_platform='window';;
+     *) cbdeps_platform='linux' ;;
+esac
+if [ ! -d "${ROOT}/src/build/tlm" ]
+then
+  mkdir -p ${ROOT}/src/build/tlm/
+  cp -aL ${ROOT}/deps/cbdeps-*-${cbdeps_platform} ${ROOT}/src/build/tlm/
+fi
+
 build_cbdep() {
   dep=$1
   tlmsha=$2
