@@ -78,7 +78,7 @@ git config --global user.name "Couchbase Build Team"
 git config --global user.email "build-team@couchbase.com"
 git config --global color.ui false
 #repo init -u git://github.com/couchbase/manifest -g all -m released/couchbase-server/${VERSION}.xml
-repo init -u git://github.com/couchbase/manifest -g all -m couchbase-server/${VERSION}.xml
+repo init -u git://github.com/couchbase/manifest -g all -m couchbase-server/mad-hatter.xml
 repo sync --jobs=6
 
 # Ensure we have git history for 'master' branch of tlm, so we can
