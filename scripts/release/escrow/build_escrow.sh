@@ -31,6 +31,9 @@ type_traits utility variant"
 # QQQ extract from asterix-opt/cmake/Modules/FindCouchbaseJava.cmake
 JDKVER=11.0.1
 
+# CBDDEPS
+CBDDEPS_VERSION=0.9.0
+
 # END normal per-version configuration variables
 
 # Compute list of platforms from Docker image names
@@ -152,7 +155,7 @@ for platform in ${PLATFORMS}
 do
 
   add_packs=$(
-    grep ${platform} ${ESCROW}/src/tlm/deps/manifest.cmake \
+    grep ${platform} ${ESCROW}/src/tlm/deps/manifest.cmake |grep -v V2 \
     | awk '{sub(/\(/, "", $2); print $2 ":" $4}'
   )
 
@@ -177,6 +180,12 @@ get_cbdep_git depot_tools
 # Copy in pre-packaged JDK
 jdkfile=jdk-${JDKVER}-linux-x64.tar.gz
 curl -o ${ESCROW}/deps/${jdkfile} http://nas-n.mgt.couchbase.com/builds/downloads/jdk/${jdkfile}
+
+# Copy in cbdep - NEED a for loop to get all platforms
+for plat in window linux mac
+do
+  curl -o ${ESCROW}/deps/ http://packages.couchbase.com/cbdep/${CBDDEPS_VERSION}/cbdep-${CBDDEPS_VERSION}-${plat}
+done
 
 # One unfortunate patch required for flatbuffers to be built with GCC 7
 heading "Patching flatbuffers for GCC 7"
