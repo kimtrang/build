@@ -53,7 +53,7 @@ heading "Populating JDK..."
 cd ${CACHE}
 mkdir -p exploded/x86_64
 cd exploded/x86_64
-tar xf ${ROOT}/deps/jdk-11.0.1-linux-x64.tar.gz
+tar xf ${ROOT}/deps/jdk-11_linux-x64_bin.tar.gz
 
 # Copy of tlm for working in.
 if [ ! -d "${TLMDIR}" ]
@@ -71,7 +71,7 @@ esac
 if [ ! -d "${ROOT}/src/build/tlm" ]
 then
   mkdir -p ${ROOT}/src/build/tlm/
-  cp -aL /escrow/deps/cbdeps-*-${cbdeps_platform} ${ROOT}/src/build/tlm/
+  cp -aL /escrow/deps/cbdep-*-${cbdeps_platform} ${ROOT}/src/build/tlm/
 fi
 
 build_cbdep() {
