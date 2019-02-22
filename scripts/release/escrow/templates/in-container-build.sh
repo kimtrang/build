@@ -71,7 +71,7 @@ esac
 if [ ! -d "${ROOT}/src/build/tlm" ]
 then
   mkdir -p ${ROOT}/src/build/tlm/
-  cp -aL ${ROOT}/deps/cbdeps-*-${cbdeps_platform} ${ROOT}/src/build/tlm/
+  cp -aL /escrow/deps/cbdeps-*-${cbdeps_platform} ${ROOT}/src/build/tlm/
 fi
 
 build_cbdep() {

@@ -29,7 +29,7 @@ optional preprocessor static_assert throw_exception type_index
 type_traits utility variant"
 
 # QQQ extract from asterix-opt/cmake/Modules/FindCouchbaseJava.cmake
-JDKVER=11.0.1
+JDKVER=11
 
 # CBDDEPS
 CBDDEPS_VERSION=0.9.0
@@ -183,15 +183,17 @@ done
 get_cbdep_git depot_tools
 
 # Copy in pre-packaged JDK
-jdkfile=jdk-${JDKVER}-linux-x64.tar.gz
+jdkfile=jdk-${JDKVER}_linux-x64_bin.tar.gz
+#http://nas-n.mgt.couchbase.com/builds/downloads/jdk/jdk-11_linux-x64_bin.tar.gz
 curl -o ${ESCROW}/deps/${jdkfile} http://nas-n.mgt.couchbase.com/builds/downloads/jdk/${jdkfile}
 
 # Copy in cbdep - NEED a for loop to get all platforms
 for plat in window linux mac
 do
-  curl -o ${ESCROW}/deps/ http://packages.couchbase.com/cbdep/${CBDDEPS_VERSION}/cbdep-${CBDDEPS_VERSION}-${plat}
+  curl -o ${ESCROW}/deps/cbdep-${CBDDEPS_VERSION}-${plat} http://packages.couchbase.com/cbdep/${CBDDEPS_VERSION}/cbdep-${CBDDEPS_VERSION}-${plat}
 done
 
+:<<'END'
 # One unfortunate patch required for flatbuffers to be built with GCC 7
 heading "Patching flatbuffers for GCC 7"
 cd ${ESCROW}/deps/flatbuffers
@@ -201,6 +203,7 @@ then
   git cherry-pick bbb72f0b
   git tag -f v1.4.0
 fi
+END
 
 heading "Downloading Go installers..."
 mkdir -p ${ESCROW}/golang
