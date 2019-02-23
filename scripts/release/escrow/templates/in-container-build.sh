@@ -122,6 +122,8 @@ build_cbdep() {
 # Build all dependencies. The manifest is named after DOCKER_PLATFORM.
 for dep in $( cat ${ROOT}/deps/dep_manifest_${DOCKER_PLATFORM}.txt )
 do
+  DEPS=$(echo ${dep} | sed 's/:/ /')
+  echo "Building dep: ${DEPS}"
   build_cbdep $(echo ${dep} | sed 's/:/ /')
 done
 
