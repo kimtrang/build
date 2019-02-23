@@ -32,7 +32,7 @@ type_traits utility variant"
 JDKVER=11
 
 # CBDDEPS
-CBDDEPS_VERSIONS=0.8.3 0.9.0 0.9.1
+CBDDEPS_VERSIONS="0.8.3 0.9.0 0.9.1"
 
 # END normal per-version configuration variables
 
@@ -190,9 +190,9 @@ curl -o ${ESCROW}/deps/${jdkfile} http://nas-n.mgt.couchbase.com/builds/download
 # Copy in cbdep - NEED a for loop to get all platforms
 for cbdep_ver in ${CBDDEPS_VERSIONS}
 do
-  curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-${window} http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-${window}
-  curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-${linux} http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-${linux}
-  curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-${mac} http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-${mac}
+  curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-window http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-window
+  curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-linux http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-linux
+  curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-macos http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-macos
 done
 
 :<<'END'
