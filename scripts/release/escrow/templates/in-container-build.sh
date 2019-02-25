@@ -95,8 +95,7 @@ build_cbdep() {
   # potentially different SHA each time above.
   shopt -s nullglob
   sed -i.bak \
-    -e 's/\(git\|https\):\/\/github.com\/couchbasedeps\/\([^ ]*\)/file:\/\/\/home\/couchbase\/escrow\/deps\/\2/g' \
-    -e 's/\.git//g' \
+    -e "s/\(git\|https\):\/\/github.com\/couchbasedeps\/\([^ ]*\)/file:\/\/\/home\/couchbase\/escrow\/deps\/${dep}\/\2/g"
     ${TLMDIR}/deps/packages/CMakeLists.txt \
     ${TLMDIR}/deps/packages/*/CMakeLists.txt \
     ${TLMDIR}/deps/packages/*/*.sh
