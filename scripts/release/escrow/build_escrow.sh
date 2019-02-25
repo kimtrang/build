@@ -170,7 +170,7 @@ do
   done
   add_packs+=$fpack
   echo "add_packs: $add_packs"
-
+done
   # Download and keep a record of all third-party deps
   dep_manifest=${ESCROW}/deps/dep_manifest_${platform}.txt
   rm -f ${dep_manifest}
@@ -180,7 +180,7 @@ do
   done
 
 ### Ensure folly built last
-BUILD_FOLLY_LAST=`awk '{ if ( /^folly/ ) { store=$0 } else { print } }END{ print store }' ${dep_manifest}`
+BUILD_FOLLY_LAST=$(awk '{ if ( /^folly/ ) { store=$0 } else { print } }END{ print store }' ${dep_manifest})
 echo ${BUILD_FOLLY_LAST} > ${dep_manifest}
 ### Need to ensure snappy built before rocksdb
 
