@@ -166,10 +166,10 @@ do
   for fdep in ${folly_extra_deps}
   do
     fpack=$(grep ${fdep} ${ESCROW}/src/tlm/deps/packages/CMakeLists.txt \
-    | awk '{sub(/\(/, "", $2);sub(/\)/, ""); print $2 ":" "cb-"$4}'
+    | awk '{sub(/\(/, "", $2);sub(/\)/, ""); print $2 "-cb"$4}'
     )
+    add_packs+=$(echo -e "\n${fdep}:$fpack")
   done
-  add_packs+=$fpack
   echo "add_packs: $add_packs"
 done
   # Download and keep a record of all third-party deps
