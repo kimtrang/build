@@ -100,6 +100,10 @@ build_cbdep() {
     ${TLMDIR}/deps/packages/*/CMakeLists.txt \
     ${TLMDIR}/deps/packages/*/*.sh
   shopt -u nullglob
+  # Fix the depot_tools entry
+  if [ ${dep} == 'v8' ]; then
+     sed -i.bak2 -e 's/file:\/\/\/home\/couchbase\/escrow\/deps\/v8\/depot_tools/file:\/\/\/home\/couchbase\/escrow\/deps\/depot_tools\/depot_tools.git/g' ${TLMDIR}/deps/packages/*/*.sh
+  fi
 
   # skip openjdk-rt cbdeps build
   if [ ${dep} == 'openjdk-rt' ]

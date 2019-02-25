@@ -172,12 +172,10 @@ do
     download_cbdep $(echo ${add_pack} | sed 's/:/ /g') ${dep_manifest}
   done
 
-  ### Ensure that snappy is built first (before python-/snapuy)
-  ###grep '^snappy' ${dep_manifest} > ${ESCROW}/deps/dep2.txt
-  ###grep -v '^snappy' ${dep_manifest} >> ${ESCROW}/deps/dep2.txt
-  ###mv ${ESCROW}/deps/dep2.txt ${dep_manifest}
-
-done
+### Ensure folly built last
+BUILD_FOLLY_LAST=`awk '{ if ( /^folly/ ) { store=$0 } else { print } }END{ print store }' ${dep_manifest}`
+echo ${BUILD_FOLLY_LAST} > ${dep_manifest}
+### Need to ensure snappy built before rocksdb
 
 # Need this tool for v8 build
 get_cbdep_git depot_tools
