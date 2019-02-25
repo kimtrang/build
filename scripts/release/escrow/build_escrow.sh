@@ -157,11 +157,18 @@ download_cbdep() {
 # Determine set of cbdeps used by this build, per platform.
 for platform in ${PLATFORMS}
 do
-
   add_packs=$(
     grep ${platform} ${ESCROW}/src/tlm/deps/manifest.cmake |grep -v V2 \
     | awk '{sub(/\(/, "", $2); print $2 ":" $4}'
   )
+  folly_extra_deps="gflags glog"
+  for fdep in ${folly_extra_deps}
+  do
+    fpack=$(grep ${fdep} ${ESCROW}/src/tlm/deps/packages/CMakeLists.txt \
+    | awk '{sub(/\(/, "", $2);sub(/\)/, ""); print $2 ":" "cb-"$4}'
+    )
+  done
+  add_packs+=$fpack
   echo "add_packs: $add_packs"
 
   # Download and keep a record of all third-party deps
