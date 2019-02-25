@@ -152,6 +152,7 @@ download_cbdep() {
   fi
 
   echo "${dep}:${tlmsha}" >> ${dep_manifest}
+  echo "${dep}:${tlmsha}"
 }
 
 # Determine set of cbdeps used by this build, per platform.
