@@ -11,6 +11,8 @@ fi
 DOCKER_PLATFORM=$1
 VERSION=$2
 
+CBDDEPS_VERSIONS="0.8.3 0.9.0 0.9.1"
+
 # Convert Docker platform to Build platform (sorry they're different)
 if [ "${DOCKER_PLATFORM}" = "ubuntu18" ]
 then
@@ -68,11 +70,13 @@ case ${PLATFORM} in
   win*) cbdeps_platform='window';;
      *) cbdeps_platform='linux' ;;
 esac
-if [ ! -d "${ROOT}/src/build/tlm" ]
-then
-  mkdir -p ${ROOT}/src/build/tlm/
-  cp -aL /escrow/deps/cbdep-*-${cbdeps_platform} ${ROOT}/src/build/tlm/
-fi
+for cbdep_ver in ${CBDDEPS_VERSIONS}
+  if [ ! -d "${HOME}/.cbdepscache/cbdep/${cbdep_ver}/" ]
+  then
+    mkdir -p ${HOME}/.cbdepscache/cbdep/${cbdep_ver}/
+    cp -aL /escrow/deps/cbdep-*-${cbdeps_platform} ${HOME}/.cbdepscache/cbdep/${cbdep_ver}/
+  fi
+done
 
 build_cbdep() {
   dep=$1
