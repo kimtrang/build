@@ -109,6 +109,21 @@ get_cbdep_git() {
   fi
 }
 
+get_cbddeps2_src() {
+  local dep=$1
+  local manifest=$2
+
+  cd ${ESCROW}/deps
+  if [ ! -d ${dep} ]
+  then
+    mkdir ${dep}
+    cd ${dep}
+    heading "Downloading cbdep2 ${dep} ..."
+    repo init -u git://github.com/couchbase/manifest -g all -m cbdeps/${dep}/${manifest}
+    repo sync --jobs=6
+  fi
+}
+
 download_cbdep() {
   local dep=$1
   local ver=$2
@@ -183,7 +198,24 @@ done
 ### Ensure folly built last
 BUILD_FOLLY_LAST=$(awk '{ if ( /^folly/ ) { store=$0 } else { print } }END{ print store }' ${dep_manifest})
 echo ${BUILD_FOLLY_LAST} > ${dep_manifest}
-### Need to ensure snappy built before rocksdb
+### KIM Need to ensure snappy built before rocksdb
+
+### KIM - Need to build cbdeps V2
+for platform in ${PLATFORMS}
+do
+  add_packs_v2=$(
+    grep ${platform} ${ESCROW}/src/tlm/deps/manifest.cmake | grep V2 \
+    | awk '{sub(/\(/, "", $2); print $2 ":" $5}'
+  )
+done
+echo "add_packs_v2: $add_packs_v2"
+# Download and keep a record of all third-party V2 deps
+dep_v2_manifest=${ESCROW}/deps/dep_v2_manifest_${platform}.txt
+echo "$add_packs_v2" > ${dep_v2_manifest}
+for add_pack in ${add_packs}
+do
+  get_cbddeps2_src ${dep} master.xml
+done
 
 # Need this tool for v8 build
 get_cbdep_git depot_tools

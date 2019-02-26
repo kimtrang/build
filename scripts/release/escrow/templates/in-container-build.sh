@@ -125,6 +125,28 @@ build_cbdep() {
   cp ${tarball} ${CACHE}
   cp ${tarball/tgz/md5} ${CACHE}/$( basename ${tarball} ).md5
 }
+build_cbdep_v2() {
+  dep=$1
+
+  if [ -e ${CACHE}/${dep}*.tgz ]
+  then
+    echo "Dependency ${dep} already built..."
+    return
+  fi
+
+  heading "Building dependency ${dep}...."
+  cd ${TLMDIR}
+  cp /escrow/deps/${dep} ${TLMDIR}/deps/packages/
+
+  # Invoke the actual build script
+  cd ${TLMDIR}/deps/packages/${dep} && cbbuild-tools/cbdeps/scripts/build-one-cbdep
+
+  echo
+  echo "Copying dependency ${dep} to local cbdeps cache..."
+  tarball=$( ls ${TLMDIR}/deps/packages/build/deps/${dep}/*/*.tgz )
+  cp ${tarball} ${CACHE}
+  cp ${tarball/tgz/md5} ${CACHE}/$( basename ${tarball} ).md5
+}
 
 # Build all dependencies. The manifest is named after DOCKER_PLATFORM.
 for dep in $( cat ${ROOT}/deps/dep_manifest_${DOCKER_PLATFORM}.txt )
@@ -132,6 +154,14 @@ do
   DEPS=$(echo ${dep} | sed 's/:/ /')
   echo "Building dep: ${DEPS}"
   build_cbdep $(echo ${dep} | sed 's/:/ /')
+done
+
+# Build all dependencies. The manifest is named after DOCKER_PLATFORM.
+for dep in $( cat ${ROOT}/deps/dep_v2_manifest_${DOCKER_PLATFORM}.txt )
+do
+  DEPS=$(echo ${dep} | sed 's/:/ /')
+  echo "Building dep: ${DEPS}"
+  build_cbdep_v2 ${dep}
 done
 
 # Copy in all Go versions.
