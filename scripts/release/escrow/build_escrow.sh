@@ -207,7 +207,7 @@ for platform in ${PLATFORMS}
 do
   add_packs_v2=$(
     grep ${platform} ${ESCROW}/src/tlm/deps/manifest.cmake | grep V2 \
-    | awk '{sub(/\(/, "", $2); print $2 ":" $5}'
+    | awk '{sub(/\(/, "", $2); print $2 ":" $5 "-" $7}'
   )
 done
 echo "add_packs_v2: $add_packs_v2"

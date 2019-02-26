@@ -128,6 +128,7 @@ build_cbdep() {
 }
 build_cbdep_v2() {
   dep=$1
+  ver=$2
 
   if [ -e ${CACHE}/${dep}*.tgz ]
   then
@@ -144,13 +145,14 @@ build_cbdep_v2() {
   export WORKSPACE=`pwd` && \
   export PRODUCT=${dep} && \
   export VERSION=$(egrep VERSION .repo/manifest.xml  | awk '{ for ( n=1; n<=NF; n++ ) if($n ~ "value=") print $n }'  | cut -d'=' -f2  | cut -d'"' -f2) && \
+  export BLD_NUM=$(echo $ver | awk -F'-' '{print $2}') && \
   #Use the patch version
-  cp /escrow/build-one-cbdep build-tools/cbdeps/scripts/build-one-cbdep
+  cp /escrow/build-one-cbdep build-tools/cbdeps/scripts/build-one-cbdep && \
   build-tools/cbdeps/scripts/build-one-cbdep
 
   echo
   echo "Copying dependency ${dep} to local cbdeps cache..."
-  tarball=$( ls ${TLMDIR}/deps/packages/build/deps/${dep}/*/*.tgz )
+  tarball=$( ls ${TLMDIR}/deps/packages/${dep}/*/*/*/*.tgz )
   cp ${tarball} ${CACHE}
   cp ${tarball/tgz/md5} ${CACHE}/$( basename ${tarball} ).md5
 }
@@ -167,8 +169,8 @@ done
 for dep in $( cat ${ROOT}/deps/dep_v2_manifest_${DOCKER_PLATFORM}.txt )
 do
   DEPS=$(echo ${dep} | sed 's/:/ /')
-  echo "Building dep: ${DEPS}"
-  build_cbdep_v2 ${DEPS}
+  echo "Building dep v2: ${DEPS}"
+  build_cbdep_v2 $(echo ${dep} | sed 's/:/ /')
 done
 
 # Copy in all Go versions.
