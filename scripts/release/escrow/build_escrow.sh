@@ -214,9 +214,9 @@ echo "add_packs_v2: $add_packs_v2"
 # Download and keep a record of all third-party V2 deps
 dep_v2_manifest=${ESCROW}/deps/dep_v2_manifest_${platform}.txt
 echo "$add_packs_v2" > ${dep_v2_manifest}
-for add_pack in ${add_packs}
+for add_pack in ${add_packs_v2}
 do
-  get_cbddeps2_src ${dep} master.xml
+  get_cbddeps2_src $(echo ${add_pack} | sed 's/:.*/ /g') master.xml
 done
 
 # Need this tool for v8 build
