@@ -74,7 +74,9 @@ heading "Copying escrowed sources and dependencies into container"
 docker exec -it ${SLAVENAME} rm -rf /home/couchbase/escrow
 docker exec -it ${SLAVENAME} mkdir -p /home/couchbase/escrow
 docker exec -it ${SLAVENAME} cp -a /escrow/in-container-build.sh \
-  /escrow/deps /escrow/golang /escrow/src /home/couchbase/escrow
+  /escrow/build-one-cbdep \
+  /escrow/deps /escrow/golang \
+  /escrow/src /home/couchbase/escrow
 docker exec -it ${SLAVENAME} chown -R couchbase:couchbase /home/couchbase
 
 # Launch build process

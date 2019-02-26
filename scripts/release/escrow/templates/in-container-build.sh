@@ -144,6 +144,8 @@ build_cbdep_v2() {
   export WORKSPACE=`pwd` && \
   export PRODUCT=${dep} && \
   export VERSION=$(egrep VERSION .repo/manifest.xml  | awk '{ for ( n=1; n<=NF; n++ ) if($n ~ "value=") print $n }'  | cut -d'=' -f2  | cut -d'"' -f2) && \
+  #Use the patch version
+  cp /escrow/build-one-cbdep build-tools/cbdeps/scripts/build-one-cbdep
   build-tools/cbdeps/scripts/build-one-cbdep
 
   echo
