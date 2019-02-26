@@ -138,7 +138,7 @@ build_cbdep_v2() {
 
   heading "Building dependency ${dep}...."
   cd ${TLMDIR}
-  cp -rp /escrow/deps/${dep} ${TLMDIR}/deps/packages/
+  cp -rf /escrow/deps/${dep} ${TLMDIR}/deps/packages/
 
   # Invoke the actual build script
   pushd ${TLMDIR}/deps/packages/${dep} && \
