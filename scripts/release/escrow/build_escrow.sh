@@ -147,6 +147,7 @@ download_cbdep() {
   # Split off the "version" and "build number"
   version=$(echo ${ver} | perl -nle '/^(.*?)(-cb.*)?$/ && print $1')
   cbnum=$(echo ${ver} | perl -nle '/-cb(.*)/ && print $1')
+  echo "KIMKIM === version:$version cbnum:$cbnum"
 
   # Figure out the tlm SHA which builds this dep
   tlmsha=$(
@@ -177,7 +178,8 @@ do
     grep ${platform} ${ESCROW}/src/tlm/deps/manifest.cmake |grep -v V2 \
     | awk '{sub(/\(/, "", $2); print $2 ":" $4}'
   )
-  folly_extra_deps="gflags glog"
+  #folly_extra_deps="gflags glog"
+  folly_extra_deps="gflags"
   for fdep in ${folly_extra_deps}
   do
     fpack=$(grep ${fdep} ${ESCROW}/src/tlm/deps/packages/CMakeLists.txt \
