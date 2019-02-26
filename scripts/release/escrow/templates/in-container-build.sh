@@ -71,6 +71,7 @@ case ${PLATFORM} in
      *) cbdeps_platform='linux' ;;
 esac
 for cbdep_ver in ${CBDDEPS_VERSIONS}
+do
   if [ ! -d "${HOME}/.cbdepscache/cbdep/${cbdep_ver}/" ]
   then
     mkdir -p ${HOME}/.cbdepscache/cbdep/${cbdep_ver}/
@@ -136,10 +137,14 @@ build_cbdep_v2() {
 
   heading "Building dependency ${dep}...."
   cd ${TLMDIR}
-  cp /escrow/deps/${dep} ${TLMDIR}/deps/packages/
+  cp -rp /escrow/deps/${dep} ${TLMDIR}/deps/packages/
 
   # Invoke the actual build script
-  cd ${TLMDIR}/deps/packages/${dep} && cbbuild-tools/cbdeps/scripts/build-one-cbdep
+  pushd ${TLMDIR}/deps/packages/${dep} && \
+  export WORKSPACE=`pwd` && \
+  export PRODUCT=${dep} && \
+  export VERSION=$(egrep VERSION .repo/manifest.xml  | awk '{ for ( n=1; n<=NF; n++ ) if($n ~ "value=") print $n }'  | cut -d'=' -f2  | cut -d'"' -f2) && \
+  build-tools/cbdeps/scripts/build-one-cbdep
 
   echo
   echo "Copying dependency ${dep} to local cbdeps cache..."
@@ -161,7 +166,7 @@ for dep in $( cat ${ROOT}/deps/dep_v2_manifest_${DOCKER_PLATFORM}.txt )
 do
   DEPS=$(echo ${dep} | sed 's/:/ /')
   echo "Building dep: ${DEPS}"
-  build_cbdep_v2 ${dep}
+  build_cbdep_v2 ${DEPS}
 done
 
 # Copy in all Go versions.
