@@ -152,7 +152,7 @@ build_cbdep_v2() {
 
   echo
   echo "Copying dependency ${dep} to local cbdeps cache..."
-  tarball=$( ls ${TLMDIR}/deps/packages/${dep}/*/*/*/*.tgz )
+  tarball=$( ls ${TLMDIR}/deps/packages/${dep}/*/*/*/*/*.tgz )
   cp ${tarball} ${CACHE}
   cp ${tarball/tgz/md5} ${CACHE}/$( basename ${tarball} ).md5
 }
