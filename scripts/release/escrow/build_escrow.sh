@@ -179,7 +179,7 @@ do
     | awk '{sub(/\(/, "", $2); print $2 ":" $4}'
   )
   #folly_extra_deps="gflags glog"
-  folly_extra_deps="gflags"
+  folly_extra_deps="gflags jemalloc"
   for fdep in ${folly_extra_deps}
   do
     fpack=$(grep ${fdep} ${ESCROW}/src/tlm/deps/packages/CMakeLists.txt \
@@ -197,10 +197,11 @@ done
     download_cbdep $(echo ${add_pack} | sed 's/:/ /g') ${dep_manifest}
   done
 
-### Ensure folly built last
+### Ensure rocksdb and folly built last
+BUILD_ROCKSDB_LAST=$(awk '{ if ( /^rocksdb/ ) { store=$0 } else { print } }END{ print store }' ${dep_manifest})
+echo ${BUILD_ROCKSDB_LAST} > ${dep_manifest}
 BUILD_FOLLY_LAST=$(awk '{ if ( /^folly/ ) { store=$0 } else { print } }END{ print store }' ${dep_manifest})
 echo ${BUILD_FOLLY_LAST} > ${dep_manifest}
-### KIM Need to ensure snappy built before rocksdb
 
 ### KIM - Need to build cbdeps V2
 for platform in ${PLATFORMS}
