@@ -182,7 +182,7 @@ do
   folly_extra_deps="gflags jemalloc"
   for fdep in ${folly_extra_deps}
   do
-    fpack=$(grep ${fdep} ${ESCROW}/src/tlm/deps/packages/CMakeLists.txt \
+    fpack=$(grep ${fdep} ${ESCROW}/src/tlm/deps/packages/folly/CMakeLists.txt \
     | awk '{sub(/\(/, "", $2);sub(/\)/, ""); print $2 "-cb"$4}'
     )
     add_packs+=$(echo -e "\n${fdep}:$fpack")
@@ -198,10 +198,9 @@ done
   done
 
 ### Ensure rocksdb and folly built last
-BUILD_ROCKSDB_LAST=$(awk '{ if ( /^rocksdb/ ) { store=$0 } else { print } }END{ print store }' ${dep_manifest})
-echo ${BUILD_ROCKSDB_LAST} > ${dep_manifest}
-BUILD_FOLLY_LAST=$(awk '{ if ( /^folly/ ) { store=$0 } else { print } }END{ print store }' ${dep_manifest})
-echo ${BUILD_FOLLY_LAST} > ${dep_manifest}
+egrep "^rocksdb|^folly" ${dep_manifest} > ${ESCROW}/deps/dep2.txt
+egrep -v "^rocksdb|^folly" ${dep_manifest} >> ${ESCROW}/deps/dep2.txt
+mv ${ESCROW}/deps/dep2.txt ${dep_manifest}
 
 ### KIM - Need to build cbdeps V2
 for platform in ${PLATFORMS}
