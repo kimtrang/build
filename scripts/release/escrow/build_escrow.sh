@@ -179,14 +179,17 @@ do
     | awk '{sub(/\(/, "", $2); print $2 ":" $4}'
   )
   #folly_extra_deps="gflags glog"
-  folly_extra_deps="gflags jemalloc"
+  folly_extra_deps="gflags"
+  jemalloc_extra_deps="jemalloc:4.5.0.1-cb1"
   for fdep in ${folly_extra_deps}
   do
     fpack=$(grep ${fdep} ${ESCROW}/src/tlm/deps/packages/folly/CMakeLists.txt \
-    | awk '{sub(/\(/, "", $2);sub(/\)/, ""); print $2 "-cb"$4}'
+    | awk '{sub(/declare_dep\(/, "", $1); print $1 ":" $3}'
     )
     add_packs+=$(echo -e "\n${fdep}:$fpack")
   done
+  # special case for folly's jemalloc
+  add_packs+=$(echo -e "\n${jemalloc_extra_deps}")
   echo "add_packs: $add_packs"
 done
   # Download and keep a record of all third-party deps
