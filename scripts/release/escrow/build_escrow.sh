@@ -195,8 +195,8 @@ done
   done
 
 ### Ensure rocksdb and folly built last
-egrep "^rocksdb|^folly" ${dep_manifest} > ${ESCROW}/deps/dep2.txt
 egrep -v "^rocksdb|^folly" ${dep_manifest} >> ${ESCROW}/deps/dep2.txt
+egrep "^rocksdb|^folly" ${dep_manifest} > ${ESCROW}/deps/dep2.txt
 mv ${ESCROW}/deps/dep2.txt ${dep_manifest}
 
 ### KIM - Need to build cbdeps V2
