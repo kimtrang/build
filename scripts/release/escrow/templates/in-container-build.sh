@@ -9,7 +9,7 @@ then
 fi
 
 DOCKER_PLATFORM=$1
-VERSION=$2
+SERVER_VERSION=$2
 
 CBDDEPS_VERSIONS="0.8.3 0.9.0 0.9.1"
 
@@ -193,7 +193,7 @@ cp -a ${ROOT}/golang/* ${CACHE}
 # Finally, build the Couchbase Server package.
 heading "Building Couchbase Server ${VERSION} Enterprise Edition..."
 ${ROOT}/src/cbbuild/scripts/jenkins/couchbase_server/server-linux-build.sh \
-  ${PLATFORM} ${VERSION} enterprise 9999
+  ${PLATFORM} ${SERVER_VERSION} enterprise 9999
 
 # Remove any "oel6" binaries to avoid confusion
 rm -f ${ROOT}/src/couchbase*oel6*rpm
