@@ -184,6 +184,12 @@ done
 heading "Copying Golang versions..."
 cp -a ${ROOT}/golang/* ${CACHE}
 
+# need to unset variables from cbdeps V2 build
+  unset WORKSPACE
+  unset PRODUCT
+  unset VERSION
+  unset BLD_NUM
+
 # Finally, build the Couchbase Server package.
 heading "Building Couchbase Server ${VERSION} Enterprise Edition..."
 ${ROOT}/src/cbbuild/scripts/jenkins/couchbase_server/server-linux-build.sh \
