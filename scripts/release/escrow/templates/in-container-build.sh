@@ -144,7 +144,7 @@ build_cbdep_v2() {
   pushd ${TLMDIR}/deps/packages/${dep} && \
   export WORKSPACE=`pwd` && \
   export PRODUCT=${dep} && \
-  export VERSION=$(egrep VERSION .repo/manifest.xml  | awk '{ for ( n=1; n<=NF; n++ ) if($n ~ "value=") print $n }'  | cut -d'=' -f2  | cut -d'"' -f2) && \
+  export VERSION=$(egrep VERSION /home/couchbase/escrow/deps/${dep}/.repo/manifest.xml  | awk '{ for ( n=1; n<=NF; n++ ) if($n ~ "value=") print $n }'  | cut -d'=' -f2  | cut -d'"' -f2) && \
   export BLD_NUM=$(echo $ver | awk -F'-' '{print $2}') && \
   #Use the patch version
   cp /escrow/build-one-cbdep build-tools/cbdeps/scripts/build-one-cbdep && \
@@ -152,7 +152,7 @@ build_cbdep_v2() {
 
   echo
   echo "Copying dependency ${dep} to local cbdeps cache..."
-  tarball=$( ls ${TLMDIR}/deps/packages/${dep}/*/*/*/*/*.tgz )
+  tarball=$( ls ${TLMDIR}/deps/packages/${dep}/*/*/*/*/*.tgz ${TLMDIR}/deps/packages/${dep}/*/*/*/*/*.md5)
   cp ${tarball} ${CACHE}
   #cp ${tarball/tgz/md5} ${CACHE}/$( basename ${tarball} ).md5
 }
