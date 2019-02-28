@@ -271,6 +271,6 @@ perl -pi -e "s/\@\@VERSION\@\@/${VERSION}/g; s/\@\@PLATFORMS\@\@/${PLATFORMS}/g"
 
 heading "Creating escrow tarball (will take some time)..."
 cd ${ROOT}
-tar czf ${PRODUCT}-${VERSION}.tar.gz ${PRODUCT}-${VERSION}
+#tar czf ${PRODUCT}-${VERSION}.tar.gz ${PRODUCT}-${VERSION}
 
 heading "Done!"
