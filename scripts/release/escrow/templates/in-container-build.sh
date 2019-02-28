@@ -50,9 +50,10 @@ fi
 # Create all cbdeps. Start with the cache directory.
 mkdir -p ${CACHE}
 
-# Populating folly for now
-cp ${ROOT}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz.md5 \
-   ${ROOT}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz ${CACHE}/
+# Populating folly's jemalloc-4.x for now
+cp ${ROOT}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz* ${CACHE}/
+#cp ${ROOT}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz.md5 \
+#   ${ROOT}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz ${CACHE}/
 
 # Pre-populate the JDK by hand.
 heading "Populating JDK..."

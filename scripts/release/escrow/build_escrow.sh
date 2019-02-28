@@ -180,9 +180,9 @@ do
   )
   #folly_extra_deps="gflags glog"
   gflags_extra_deps="gflags:2.2.1-cb2"
-  jemalloc_extra_deps="jemalloc:4.5.0.1-cb1"
+  #jemalloc_extra_deps="jemalloc:4.5.0.1-cb1"
   # special case for folly's jemalloc and gflags
-  add_packs+=$(echo -e "\n${jemalloc_extra_deps}")
+  #add_packs+=$(echo -e "\n${jemalloc_extra_deps}")
   add_packs+=$(echo -e "\n${gflags_extra_deps}")
   echo "add_packs: $add_packs"
 done
@@ -224,9 +224,11 @@ jdkfile=jdk-${JDKVER}_linux-x64_bin.tar.gz
 #http://nas-n.mgt.couchbase.com/builds/downloads/jdk/jdk-11_linux-x64_bin.tar.gz
 curl -o ${ESCROW}/deps/${jdkfile} http://nas-n.mgt.couchbase.com/builds/downloads/jdk/${jdkfile}
 
-# download folly for now
-curl -o ${ESCROW}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/folly/v2018.08.13.00-cb1/folly-centos7-x86_64-v2018.08.13.00-cb1.md5
-curl -o ${ESCROW}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz http://172.23.120.24/builds/releases/cbdeps/folly/v2018.08.13.00-cb1/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz
+# download folly's jemalloc-4.x dependency for now
+curl -o ${ESCROW}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/jemalloc/4.5.0.1-cb1/jemalloc-centos7-x86_64-4.5.0.1-cb1.md5
+curl -o ${ESCROW}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz http://172.23.120.24/builds/releases/cbdeps/jemalloc/4.5.0.1-cb1/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz
+#curl -o ${ESCROW}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/folly/v2018.08.13.00-cb1/folly-centos7-x86_64-v2018.08.13.00-cb1.md5
+#curl -o ${ESCROW}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz http://172.23.120.24/builds/releases/cbdeps/folly/v2018.08.13.00-cb1/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz
 
 # Copy in cbdep - NEED a for loop to get all platforms
 for cbdep_ver in ${CBDDEPS_VERSIONS}
