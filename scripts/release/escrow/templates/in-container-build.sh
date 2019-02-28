@@ -50,6 +50,10 @@ fi
 # Create all cbdeps. Start with the cache directory.
 mkdir -p ${CACHE}
 
+# Populating folly for now
+cp ${ROOT}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz.md5 \
+   ${ROOT}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz ${CACHE}/
+
 # Pre-populate the JDK by hand.
 heading "Populating JDK..."
 cd ${CACHE}
@@ -122,9 +126,9 @@ build_cbdep() {
 
   echo
   echo "Copying dependency ${dep} to local cbdeps cache..."
-  tarball=$( find ${TLMDIR}/deps/packages/build/deps/${dep} -type f -name *.tgz -or -name *.md5 )
+  tarball=$( ls ${TLMDIR}/deps/packages/build/deps/${dep}/*/*.tgz )
   cp ${tarball} ${CACHE}
-  #cp ${tarball/tgz/md5} ${CACHE}/$( basename ${tarball} ).md5
+  cp ${tarball/tgz/md5} ${CACHE}/$( basename ${tarball} ).md5
 }
 build_cbdep_v2() {
   dep=$1
@@ -152,9 +156,9 @@ build_cbdep_v2() {
 
   echo
   echo "Copying dependency ${dep} to local cbdeps cache..."
-  tarball=$( ls ${TLMDIR}/deps/packages/${dep}/*/*/*/*/*.tgz ${TLMDIR}/deps/packages/${dep}/*/*/*/*/*.md5)
+  tarball=$( ls ${TLMDIR}/deps/packages/${dep}/*/*/*/*/*.tgz )
   cp ${tarball} ${CACHE}
-  #cp ${tarball/tgz/md5} ${CACHE}/$( basename ${tarball} ).md5
+  cp ${tarball/tgz/md5} ${CACHE}/$( basename ${tarball} ).md5
 }
 
 # Build all dependencies. The manifest is named after DOCKER_PLATFORM.

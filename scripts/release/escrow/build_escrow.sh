@@ -224,6 +224,10 @@ jdkfile=jdk-${JDKVER}_linux-x64_bin.tar.gz
 #http://nas-n.mgt.couchbase.com/builds/downloads/jdk/jdk-11_linux-x64_bin.tar.gz
 curl -o ${ESCROW}/deps/${jdkfile} http://nas-n.mgt.couchbase.com/builds/downloads/jdk/${jdkfile}
 
+# download folly for now
+curl -o ${ESCROW}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/folly/v2018.08.13.00-cb1/folly-centos7-x86_64-v2018.08.13.00-cb1.md5
+curl -o ${ESCROW}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz http://172.23.120.24/builds/releases/cbdeps/folly/v2018.08.13.00-cb1/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz
+
 # Copy in cbdep - NEED a for loop to get all platforms
 for cbdep_ver in ${CBDDEPS_VERSIONS}
 do
