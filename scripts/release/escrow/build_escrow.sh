@@ -227,8 +227,8 @@ curl -o ${ESCROW}/deps/${jdkfile} http://nas-n.mgt.couchbase.com/builds/download
 # download folly's jemalloc-4.x dependency for now
 curl -o ${ESCROW}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/jemalloc/4.5.0.1-cb1/jemalloc-centos7-x86_64-4.5.0.1-cb1.md5
 curl -o ${ESCROW}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz http://172.23.120.24/builds/releases/cbdeps/jemalloc/4.5.0.1-cb1/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz
-#curl -o ${ESCROW}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/folly/v2018.08.13.00-cb1/folly-centos7-x86_64-v2018.08.13.00-cb1.md5
-#curl -o ${ESCROW}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz http://172.23.120.24/builds/releases/cbdeps/folly/v2018.08.13.00-cb1/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz
+curl -o ${ESCROW}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/zlib/1.2.11-cb3/zlib-centos7-x86_64-1.2.11-cb3.md5
+curl -o ${ESCROW}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz http://172.23.120.24/builds/releases/cbdeps/zlib/1.2.11-cb3/zlib-centos7-x86_64-1.2.11-cb3.tgz
 
 # Copy in cbdep - NEED a for loop to get all platforms
 for cbdep_ver in ${CBDDEPS_VERSIONS}
@@ -250,6 +250,7 @@ then
 fi
 END
 
+### KIMKIM - NEED to get this via cbdep-0.9.1-linux tool
 heading "Downloading Go installers..."
 mkdir -p ${ESCROW}/golang
 cd ${ESCROW}/golang
