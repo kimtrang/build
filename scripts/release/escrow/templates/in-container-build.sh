@@ -11,7 +11,7 @@ fi
 DOCKER_PLATFORM=$1
 SERVER_VERSION=$2
 
-CBDDEPS_VERSIONS="0.8.3 0.9.0 0.9.1"
+CBDDEPS_VERSIONS="0.8.3 0.9.0 0.9.1 0.9.2"
 
 # Convert Docker platform to Build platform (sorry they're different)
 if [ "${DOCKER_PLATFORM}" = "ubuntu18" ]
