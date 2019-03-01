@@ -52,7 +52,7 @@ mkdir -p ${CACHE}
 
 # Populating folly's jemalloc-4.x for now
 cp -f ${ROOT}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz* ${CACHE}/
-cp -f ${ROOT}/deps/zlib-centos7-x86_64-1.2.11-3.tgz*  ${CACHE}/
+cp -f ${ROOT}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz*  ${CACHE}/
 #cp ${ROOT}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz.md5 \
 #   ${ROOT}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz ${CACHE}/
 
