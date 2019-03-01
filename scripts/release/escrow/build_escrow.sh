@@ -32,7 +32,7 @@ type_traits utility variant"
 JDKVER=11
 
 # CBDDEPS
-CBDDEPS_VERSIONS="0.8.3 0.9.0 0.9.1"
+CBDDEPS_VERSIONS="0.8.3 0.9.0 0.9.1 0.9.2"
 
 # END normal per-version configuration variables
 
