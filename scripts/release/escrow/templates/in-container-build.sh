@@ -8,10 +8,12 @@ then
   exit 100
 fi
 
+source ./escrow_config || exit 1
+
 DOCKER_PLATFORM=$1
 SERVER_VERSION=$2
 
-CBDDEPS_VERSIONS="0.8.3 0.9.0 0.9.1 0.9.2"
+#CBDDEPS_VERSIONS="0.8.3 0.9.0 0.9.1 0.9.2"
 
 # Convert Docker platform to Build platform (sorry they're different)
 if [ "${DOCKER_PLATFORM}" = "ubuntu18" ]
@@ -50,6 +52,9 @@ fi
 # Create all cbdeps. Start with the cache directory.
 mkdir -p ${CACHE}
 
+# Populating analytics jars to .cbdepcache
+cp -rp /escrow/deps/.cbdepcache /home/couchbase/.cbdepcache
+cp -rp /escrow/build-tools /home/couchbase/
 # Populating folly's jemalloc-4.x for now
 cp -f ${ROOT}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz* ${CACHE}/
 cp -f ${ROOT}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz*  ${CACHE}/
@@ -57,11 +62,11 @@ cp -f ${ROOT}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz*  ${CACHE}/
 #   ${ROOT}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz ${CACHE}/
 
 # Pre-populate the JDK by hand.
-heading "Populating JDK..."
-cd ${CACHE}
-mkdir -p exploded/x86_64
-cd exploded/x86_64
-tar xf ${ROOT}/deps/jdk-11_linux-x64_bin.tar.gz
+#heading "Populating JDK..."
+#cd ${CACHE}
+#mkdir -p exploded/x86_64
+#cd exploded/x86_64
+#tar xf ${ROOT}/deps/jdk-11_linux-x64_bin.tar.gz
 
 # Copy of tlm for working in.
 if [ ! -d "${TLMDIR}" ]
@@ -152,8 +157,9 @@ build_cbdep_v2() {
   export PRODUCT=${dep} && \
   export VERSION=$(egrep VERSION /home/couchbase/escrow/deps/${dep}/.repo/manifest.xml  | awk '{ for ( n=1; n<=NF; n++ ) if($n ~ "value=") print $n }'  | cut -d'=' -f2  | cut -d'"' -f2) && \
   export BLD_NUM=$(echo $ver | awk -F'-' '{print $2}') && \
+  export LOCAL_BUILD=true && \
   #Use the patch version
-  cp /escrow/build-one-cbdep build-tools/cbdeps/scripts/build-one-cbdep && \
+  #cp /escrow/build-one-cbdep build-tools/cbdeps/scripts/build-one-cbdep && \
   build-tools/cbdeps/scripts/build-one-cbdep
 
   echo
@@ -163,7 +169,7 @@ build_cbdep_v2() {
   cp ${tarball/tgz/md5} ${CACHE}/$( basename ${tarball} ).md5
 }
 
-# Build all dependencies. The manifest is named after DOCKER_PLATFORM.
+# Build V2 dependencies first.
 for dep in $( cat ${ROOT}/deps/dep_v2_manifest_${DOCKER_PLATFORM}.txt )
 do
   DEPS=$(echo ${dep} | sed 's/:/ /')
@@ -188,6 +194,7 @@ cp -a ${ROOT}/golang/* ${CACHE}
   unset PRODUCT
   unset VERSION
   unset BLD_NUM
+  unset LOCAL_BUILD
 
 # Finally, build the Couchbase Server package.
 heading "Building Couchbase Server ${VERSION} Enterprise Edition..."

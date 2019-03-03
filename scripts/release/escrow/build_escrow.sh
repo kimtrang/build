@@ -1,38 +1,6 @@
 #!/bin/bash -e
-: <<'END'
-Pretty much what the ticket says (https://issues.couchbase.com/browse/CBD-2372) ... there's scripting that you're familiar with, but we need a job to run that script against the current source code and then try running a build with the result. Run on at least one Linux platform
 
-It *might* require setting up a dedicated VM for the slave, since it does a bunch of Docker stuff itself - may not work right if the slave itself is a Docker container.
-END
-
-# QQQ keep this list somewhere canonical per build
-IMAGES="couchbasebuild/server-centos7-build:20181228"
-#IMAGES="couchbasebuild/server-amzn2-build:20181228
-#couchbasebuild/server-centos7-build:20181228
-#couchbasebuild/server-debian8-build:20181228
-#couchbasebuild/server-debian9-build:20181228
-#couchbasebuild/server-suse11-build:20180713
-#couchbasebuild/server-suse15-build:20181228
-#couchbasebuild/server-ubuntu16-build:20181228
-#couchbasebuild/server-ubuntu18-build:20181228"
-
-# QQQ possibly keep this list somewhere canonical per build also
-GOVERS="1.7.6 1.8.3 1.8.5 1.9.6 1.10.3 1.11.4 1.11.5"
-
-# QQQ parameterize?
-VERSION=6.5.0
-PRODUCT=couchbase-server
-
-# QQQ extract from tlm/deps/packages/boost/CMakeLists.txt
-BOOST_MODULES="intrusive assert config core detail functional math move mpl
-optional preprocessor static_assert throw_exception type_index
-type_traits utility variant"
-
-# QQQ extract from asterix-opt/cmake/Modules/FindCouchbaseJava.cmake
-JDKVER=11
-
-# CBDDEPS
-CBDDEPS_VERSIONS="0.8.3 0.9.0 0.9.1 0.9.2"
+source ./escrow_config || exit 1
 
 # END normal per-version configuration variables
 
@@ -178,51 +146,45 @@ do
     grep ${platform} ${ESCROW}/src/tlm/deps/manifest.cmake |grep -v V2 \
     | awk '{sub(/\(/, "", $2); print $2 ":" $4}'
   )
+  add_packs_v2=$(
+    grep ${platform} ${ESCROW}/src/tlm/deps/manifest.cmake | grep V2 \
+    | awk '{sub(/\(/, "", $2); print $2 ":" $5 "-" $7}'
+  )
   #folly_extra_deps="gflags glog"
   gflags_extra_deps="gflags:2.2.1-cb2"
-  #jemalloc_extra_deps="jemalloc:4.5.0.1-cb1"
-  # special case for folly's jemalloc and gflags
-  #add_packs+=$(echo -e "\n${jemalloc_extra_deps}")
   add_packs+=$(echo -e "\n${gflags_extra_deps}")
   echo "add_packs: $add_packs"
+  echo "add_packs_v2: $add_packs_v2"
 done
-  # Download and keep a record of all third-party deps
-  dep_manifest=${ESCROW}/deps/dep_manifest_${platform}.txt
-  rm -f ${dep_manifest}
-  for add_pack in ${add_packs}
-  do
-    download_cbdep $(echo ${add_pack} | sed 's/:/ /g') ${dep_manifest}
-  done
+
+# Download and keep a record of all third-party deps
+dep_manifest=${ESCROW}/deps/dep_manifest_${platform}.txt
+dep_v2_manifest=${ESCROW}/deps/dep_v2_manifest_${platform}.txt
+echo "$add_packs_v2" > ${dep_v2_manifest}
+rm -f ${dep_manifest}
+for add_pack in ${add_packs}
+do
+  download_cbdep $(echo ${add_pack} | sed 's/:/ /g') ${dep_manifest}
+done
+
+# Get cbdeps V2 source
+for add_pack in ${add_packs_v2}
+do
+  get_cbddeps2_src $(echo ${add_pack} | sed 's/:.*/ /g') master.xml
+done
 
 ### Ensure rocksdb and folly built last
 egrep -v "^rocksdb|^folly" ${dep_manifest} > ${ESCROW}/deps/dep2.txt
 egrep "^rocksdb|^folly" ${dep_manifest} >> ${ESCROW}/deps/dep2.txt
 mv ${ESCROW}/deps/dep2.txt ${dep_manifest}
 
-### KIM - Need to build cbdeps V2
-for platform in ${PLATFORMS}
-do
-  add_packs_v2=$(
-    grep ${platform} ${ESCROW}/src/tlm/deps/manifest.cmake | grep V2 \
-    | awk '{sub(/\(/, "", $2); print $2 ":" $5 "-" $7}'
-  )
-done
-echo "add_packs_v2: $add_packs_v2"
-# Download and keep a record of all third-party V2 deps
-dep_v2_manifest=${ESCROW}/deps/dep_v2_manifest_${platform}.txt
-echo "$add_packs_v2" > ${dep_v2_manifest}
-for add_pack in ${add_packs_v2}
-do
-  get_cbddeps2_src $(echo ${add_pack} | sed 's/:.*/ /g') master.xml
-done
-
 # Need this tool for v8 build
 get_cbdep_git depot_tools
 
 # Copy in pre-packaged JDK
-jdkfile=jdk-${JDKVER}_linux-x64_bin.tar.gz
+#jdkfile=jdk-${JDKVER}_linux-x64_bin.tar.gz
 #http://nas-n.mgt.couchbase.com/builds/downloads/jdk/jdk-11_linux-x64_bin.tar.gz
-curl -o ${ESCROW}/deps/${jdkfile} http://nas-n.mgt.couchbase.com/builds/downloads/jdk/${jdkfile}
+#curl -o ${ESCROW}/deps/${jdkfile} http://nas-n.mgt.couchbase.com/builds/downloads/jdk/${jdkfile}
 
 # download folly's jemalloc-4.x dependency for now
 curl -o ${ESCROW}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/jemalloc/4.5.0.1-cb1/jemalloc-centos7-x86_64-4.5.0.1-cb1.md5
@@ -236,7 +198,15 @@ do
   curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-window http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-window
   curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-linux http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-linux
   curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-macos http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-macos
+  chmod +x ${ESCROW}/deps/cbdep-${cbdep_ver}-linux
 done
+
+# download ~/.cbdepcache dependency
+cbdep_ver_latest=$(echo ${CBDDEPS_VERSIONS} | tr ' ' '\n' | tail -1)
+${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -d ${ESCROW}/deps/ -n ${ANALYTICS_JARS} ${ANALYTICS_JARS_VERSION}
+
+# Pre-populate the openjdk
+${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -d ${ESCROW}/deps/ -n ${OPENJDK_NAME} ${OPENJDK_VERSION}
 
 :<<'END'
 # One unfortunate patch required for flatbuffers to be built with GCC 7
