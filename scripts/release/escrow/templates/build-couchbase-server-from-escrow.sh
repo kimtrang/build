@@ -75,7 +75,6 @@ docker exec -it ${SLAVENAME} rm -rf /home/couchbase/escrow
 docker exec -it ${SLAVENAME} mkdir -p /home/couchbase/escrow
 docker exec -it ${SLAVENAME} cp -a /escrow/in-container-build.sh \
   /escrow/escrow_config \
-  /escrow/build-tools \
   /escrow/deps /escrow/golang \
   /escrow/src /home/couchbase/escrow
 docker exec -it ${SLAVENAME} chown -R couchbase:couchbase /home/couchbase
