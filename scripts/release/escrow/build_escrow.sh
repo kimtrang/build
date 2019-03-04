@@ -236,7 +236,7 @@ done
 
 heading "Copying build scripts into escrow..."
 cd ${ROOT}
-cp -a ${ESCROW}/escrow_config templates/* ${ESCROW}
+cp -a escrow_config templates/* ${ESCROW}
 perl -pi -e "s/\@\@VERSION\@\@/${VERSION}/g; s/\@\@PLATFORMS\@\@/${PLATFORMS}/g" \
   ${ESCROW}/README.md ${ESCROW}/build-couchbase-server-from-escrow.sh
 
