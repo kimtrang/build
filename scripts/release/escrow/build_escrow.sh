@@ -182,9 +182,9 @@ mv ${ESCROW}/deps/dep2.txt ${dep_manifest}
 get_cbdep_git depot_tools
 
 # Copy in pre-packaged JDK
-#jdkfile=jdk-${JDKVER}_linux-x64_bin.tar.gz
-#http://nas-n.mgt.couchbase.com/builds/downloads/jdk/jdk-11_linux-x64_bin.tar.gz
-#curl -o ${ESCROW}/deps/${jdkfile} http://nas-n.mgt.couchbase.com/builds/downloads/jdk/${jdkfile}
+jdkfile=jdk-${JDKVER}_linux-x64_bin.tar.gz
+http://nas-n.mgt.couchbase.com/builds/downloads/jdk/jdk-11_linux-x64_bin.tar.gz
+curl -o ${ESCROW}/deps/${jdkfile} http://nas-n.mgt.couchbase.com/builds/downloads/jdk/${jdkfile}
 
 # download folly's jemalloc-4.x dependency for now
 curl -o ${ESCROW}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/jemalloc/4.5.0.1-cb1/jemalloc-centos7-x86_64-4.5.0.1-cb1.md5

@@ -61,11 +61,11 @@ cp -f ${ROOT}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz*  ${CACHE}/
 #   ${ROOT}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz ${CACHE}/
 
 # Pre-populate the JDK by hand.
-#heading "Populating JDK..."
-#cd ${CACHE}
-#mkdir -p exploded/x86_64
-#cd exploded/x86_64
-#tar xf ${ROOT}/deps/jdk-11_linux-x64_bin.tar.gz
+heading "Populating JDK..."
+cd ${CACHE}
+mkdir -p exploded/x86_64
+cd exploded/x86_64
+tar xf ${ROOT}/deps/jdk-11_linux-x64_bin.tar.gz
 
 # Copy of tlm for working in.
 if [ ! -d "${TLMDIR}" ]
