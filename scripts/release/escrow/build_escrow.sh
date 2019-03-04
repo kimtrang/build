@@ -204,11 +204,9 @@ done
 # download ~/.cbdepcache dependency
 mkdir -p ${ESCROW}/deps/.cbdepcache
 cbdep_ver_latest=$(echo ${CBDDEPS_VERSIONS} | tr ' ' '\n' | tail -1)
-${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -o ${ESCROW}/deps/.cbdepcache
- -n ${ANALYTICS_JARS} ${ANALYTICS_JARS_VERSION}
+${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -o ${ESCROW}/deps/.cbdepcache -n ${ANALYTICS_JARS} ${ANALYTICS_JARS_VERSION}
 # Pre-populate the openjdk
-${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -o ${ESCROW}/deps/.cbdepcache
- -n ${OPENJDK_NAME} ${OPENJDK_VERSION}
+${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -o ${ESCROW}/deps/.cbdepcache -n ${OPENJDK_NAME} ${OPENJDK_VERSION}
 
 :<<'END'
 # One unfortunate patch required for flatbuffers to be built with GCC 7
