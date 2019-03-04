@@ -8,7 +8,7 @@ then
   exit 100
 fi
 
-source ./escrow_config || exit 1
+source /home/couchbase/escrow/escrow_config || exit 1
 
 DOCKER_PLATFORM=$1
 SERVER_VERSION=$2
@@ -54,7 +54,6 @@ mkdir -p ${CACHE}
 
 # Populating analytics jars to .cbdepcache
 cp -rp /escrow/deps/.cbdepcache /home/couchbase/.cbdepcache
-cp -rp /escrow/build-tools /home/couchbase/
 # Populating folly's jemalloc-4.x for now
 cp -f ${ROOT}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz* ${CACHE}/
 cp -f ${ROOT}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz*  ${CACHE}/
