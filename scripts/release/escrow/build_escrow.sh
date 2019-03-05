@@ -97,20 +97,21 @@ download_cbdep() {
   local ver=$2
   local dep_manifest=$3
 
-  if [ "${dep}" = "boost" ]
-  then
+ # if [ "${dep}" = "boost" ]
+ # then
     # Boost is stored in separate repos; this means copying some logic
     # from tlm/deps/packages/boost, namely the set of repos
-    for repo in ${BOOST_MODULES}
-    do
-      get_cbdep_git boost_${repo}
-    done
-  # skip openjdk-rt cbdeps build
-  elif [[ ${dep} == 'openjdk-rt' ]]; then
-    :
-  else
-    get_cbdep_git ${dep}
-  fi
+    #for repo in ${BOOST_MODULES}
+    #do
+    #  get_cbdep_git boost_${repo}
+    #done
+# skip openjdk-rt cbdeps build
+if [[ ${dep} == 'openjdk-rt' ]]
+then
+  :
+else
+  get_cbdep_git ${dep}
+fi
 
   # Split off the "version" and "build number"
   version=$(echo ${ver} | perl -nle '/^(.*?)(-cb.*)?$/ && print $1')
@@ -182,15 +183,15 @@ mv ${ESCROW}/deps/dep2.txt ${dep_manifest}
 get_cbdep_git depot_tools
 
 # Copy in pre-packaged JDK
-jdkfile=jdk-${JDKVER}_linux-x64_bin.tar.gz
-http://nas-n.mgt.couchbase.com/builds/downloads/jdk/jdk-11_linux-x64_bin.tar.gz
-curl -o ${ESCROW}/deps/${jdkfile} http://nas-n.mgt.couchbase.com/builds/downloads/jdk/${jdkfile}
+#jdkfile=jdk-${JDKVER}_linux-x64_bin.tar.gz
+#http://nas-n.mgt.couchbase.com/builds/downloads/jdk/jdk-11_linux-x64_bin.tar.gz
+#curl -o ${ESCROW}/deps/${jdkfile} http://nas-n.mgt.couchbase.com/builds/downloads/jdk/${jdkfile}
 
 # download folly's jemalloc-4.x dependency for now
-curl -o ${ESCROW}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/jemalloc/4.5.0.1-cb1/jemalloc-centos7-x86_64-4.5.0.1-cb1.md5
-curl -o ${ESCROW}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz http://172.23.120.24/builds/releases/cbdeps/jemalloc/4.5.0.1-cb1/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz
-curl -o ${ESCROW}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/zlib/1.2.11-cb3/zlib-centos7-x86_64-1.2.11-cb3.md5
-curl -o ${ESCROW}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz http://172.23.120.24/builds/releases/cbdeps/zlib/1.2.11-cb3/zlib-centos7-x86_64-1.2.11-cb3.tgz
+#curl -o ${ESCROW}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/jemalloc/4.5.0.1-cb1/jemalloc-centos7-x86_64-4.5.0.1-cb1.md5
+#curl -o ${ESCROW}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz http://172.23.120.24/builds/releases/cbdeps/jemalloc/4.5.0.1-cb1/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz
+#curl -o ${ESCROW}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/zlib/1.2.11-cb3/zlib-centos7-x86_64-1.2.11-cb3.md5
+#curl -o ${ESCROW}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz http://172.23.120.24/builds/releases/cbdeps/zlib/1.2.11-cb3/zlib-centos7-x86_64-1.2.11-cb3.tgz
 
 # Copy in cbdep - NEED a for loop to get all platforms
 for cbdep_ver in ${CBDDEPS_VERSIONS}
@@ -203,9 +204,10 @@ done
 
 # download ~/.cbdepcache dependency
 cbdep_ver_latest=$(echo ${CBDDEPS_VERSIONS} | tr ' ' '\n' | tail -1)
-# Pre-populate the openjdk and analytic-jars
+# Pre-populate the openjdk, openjdk-rt and analytic-jars
 ${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -n ${ANALYTICS_JARS} ${ANALYTICS_JARS_VERSION}s
 ${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -n ${OPENJDK_NAME} ${OPENJDK_VERSION}
+${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -n ${OPENJDK_RT} ${OPENJDK_RT_VERSION}
 cp -rp /home/couchbase/.cbdepcache ${ESCROW}/deps/.cbdepcache
 
 :<<'END'

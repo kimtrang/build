@@ -55,17 +55,17 @@ mkdir -p ${CACHE}
 # Populating analytics jars to .cbdepcache
 cp -rp /escrow/deps/.cbdepcache /home/couchbase/.cbdepcache
 # Populating folly's jemalloc-4.x for now
-cp -f ${ROOT}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz* ${CACHE}/
-cp -f ${ROOT}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz*  ${CACHE}/
+#cp -f ${ROOT}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz* ${CACHE}/
+#cp -f ${ROOT}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz*  ${CACHE}/
 #cp ${ROOT}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz.md5 \
 #   ${ROOT}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz ${CACHE}/
 
 # Pre-populate the JDK by hand.
-heading "Populating JDK..."
-cd ${CACHE}
-mkdir -p exploded/x86_64
-cd exploded/x86_64
-tar xf ${ROOT}/deps/jdk-11_linux-x64_bin.tar.gz
+#heading "Populating JDK..."
+#cd ${CACHE}
+#mkdir -p exploded/x86_64
+#cd exploded/x86_64
+#tar xf ${ROOT}/deps/jdk-11_linux-x64_bin.tar.gz
 
 # Copy of tlm for working in.
 if [ ! -d "${TLMDIR}" ]
@@ -201,5 +201,5 @@ ${ROOT}/src/cbbuild/scripts/jenkins/couchbase_server/server-linux-build.sh \
   ${PLATFORM} ${SERVER_VERSION} enterprise 9999
 
 # Remove any "oel6" binaries to avoid confusion
-rm -f ${ROOT}/src/couchbase*oel6*rpm
+rm -f ${ROOT}/src/couchbase*oel7*rpm
 
