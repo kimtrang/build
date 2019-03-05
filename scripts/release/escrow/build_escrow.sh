@@ -205,7 +205,7 @@ done
 # download ~/.cbdepcache dependency
 cbdep_ver_latest=$(echo ${CBDDEPS_VERSIONS} | tr ' ' '\n' | tail -1)
 # Pre-populate the openjdk, openjdk-rt and analytic-jars
-${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -n ${ANALYTICS_JARS} ${ANALYTICS_JARS_VERSION}s
+${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -n ${ANALYTICS_JARS} ${ANALYTICS_JARS_VERSION}
 ${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -n ${OPENJDK_NAME} ${OPENJDK_VERSION}
 ${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -n ${OPENJDK_RT} ${OPENJDK_RT_VERSION}
 cp -rp /home/couchbase/.cbdepcache ${ESCROW}/deps/.cbdepcache
