@@ -121,11 +121,11 @@ build_cbdep() {
   fi
 
   # skip openjdk-rt cbdeps build
-  #if [ ${dep} == 'openjdk-rt' ]
-  #then
-  #  rm -f ${TLMDIR}/deps/packages/openjdk-rt/dl_rt_jar.cmake
-  #  touch ${TLMDIR}/deps/packages/openjdk-rt/dl_rt_jar.cmake
-  #fi
+  if [ ${dep} == 'openjdk-rt' ]
+  then
+    rm -f ${TLMDIR}/deps/packages/openjdk-rt/dl_rt_jar.cmake
+    touch ${TLMDIR}/deps/packages/openjdk-rt/dl_rt_jar.cmake
+  fi
 
   # Invoke the actual build script
   PACKAGE=${dep} deps/scripts/build-one-cbdep
