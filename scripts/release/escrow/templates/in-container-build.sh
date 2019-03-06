@@ -121,11 +121,11 @@ build_cbdep() {
   fi
 
   # skip openjdk-rt cbdeps build
-  if [ ${dep} == 'openjdk-rt' ]
-  then
-    rm -f ${TLMDIR}/deps/packages/openjdk-rt/dl_rt_jar.cmake
-    touch ${TLMDIR}/deps/packages/openjdk-rt/dl_rt_jar.cmake
-  fi
+  #if [ ${dep} == 'openjdk-rt' ]
+  #then
+  #  rm -f ${TLMDIR}/deps/packages/openjdk-rt/dl_rt_jar.cmake
+  #  touch ${TLMDIR}/deps/packages/openjdk-rt/dl_rt_jar.cmake
+  #fi
 
   # Invoke the actual build script
   PACKAGE=${dep} deps/scripts/build-one-cbdep
@@ -183,6 +183,10 @@ do
   echo "Building dep: ${DEPS}"
   build_cbdep $(echo ${dep} | sed 's/:/ /')  || exit 1
 done
+
+# Pre-populate openjdk-rt
+mkdir -p ${ROOT}/src/build/tlm/deps/openjdk-rt.exploded
+cp -rp ${CACHE}/${OPENJDK_RT}-${OPENJDK_RT_VERSION}/openjdk-rt.jar ${ROOT}/src/build/tlm/deps/openjdk-rt.exploded/openjdk-rt.jar
 
 # Copy in all Go versions.
 heading "Copying Golang versions..."
