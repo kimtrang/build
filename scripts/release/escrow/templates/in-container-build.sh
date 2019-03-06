@@ -186,7 +186,7 @@ done
 
 # Pre-populate openjdk-rt
 mkdir -p ${ROOT}/src/build/tlm/deps/openjdk-rt.exploded
-cp -rp ${CACHE}/${OPENJDK_RT}-${OPENJDK_RT_VERSION}/openjdk-rt.jar ${ROOT}/src/build/tlm/deps/openjdk-rt.exploded/openjdk-rt.jar
+cp -rp /escrow/deps/.cbdepscache/${OPENJDK_RT}-${OPENJDK_RT_VERSION}/openjdk-rt.jar ${ROOT}/src/build/tlm/deps/openjdk-rt.exploded/openjdk-rt.jar
 
 # Copy in all Go versions.
 heading "Copying Golang versions..."
