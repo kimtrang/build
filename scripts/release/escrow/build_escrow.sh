@@ -97,26 +97,17 @@ download_cbdep() {
   local ver=$2
   local dep_manifest=$3
 
- # if [ "${dep}" = "boost" ]
- # then
-    # Boost is stored in separate repos; this means copying some logic
-    # from tlm/deps/packages/boost, namely the set of repos
-    #for repo in ${BOOST_MODULES}
-    #do
-    #  get_cbdep_git boost_${repo}
-    #done
-# skip openjdk-rt cbdeps build
-if [[ ${dep} == 'openjdk-rt' ]]
-then
-  :
-else
-  get_cbdep_git ${dep}
-fi
+  # skip openjdk-rt cbdeps build
+  if [[ ${dep} == 'openjdk-rt' ]]
+  then
+    :
+  else
+    get_cbdep_git ${dep}
+  fi
 
   # Split off the "version" and "build number"
   version=$(echo ${ver} | perl -nle '/^(.*?)(-cb.*)?$/ && print $1')
   cbnum=$(echo ${ver} | perl -nle '/-cb(.*)/ && print $1')
-  echo "KIMKIM === version:$version cbnum:$cbnum"
 
   # Figure out the tlm SHA which builds this dep
   tlmsha=$(
@@ -135,9 +126,7 @@ fi
     echo "ERROR: couldn't find tlm SHA for ${dep} ${version} @${cbnum}@"
     exit 1
   fi
-
   echo "${dep}:${tlmsha}" >> ${dep_manifest}
-  echo "${dep}:${tlmsha}"
 }
 
 # Determine set of cbdeps used by this build, per platform.
@@ -156,7 +145,6 @@ do
   add_packs+=$(echo -e "\n${gflags_extra_deps}")
   echo "add_packs: $add_packs"
   echo "add_packs_v2: $add_packs_v2"
-done
 
 # Download and keep a record of all third-party deps
 dep_manifest=${ESCROW}/deps/dep_manifest_${platform}.txt
@@ -179,21 +167,12 @@ egrep -v "^rocksdb|^folly" ${dep_manifest} > ${ESCROW}/deps/dep2.txt
 egrep "^rocksdb|^folly" ${dep_manifest} >> ${ESCROW}/deps/dep2.txt
 mv ${ESCROW}/deps/dep2.txt ${dep_manifest}
 
+done
+
 # Need this tool for v8 build
 get_cbdep_git depot_tools
 
-# Copy in pre-packaged JDK
-#jdkfile=jdk-${JDKVER}_linux-x64_bin.tar.gz
-#http://nas-n.mgt.couchbase.com/builds/downloads/jdk/jdk-11_linux-x64_bin.tar.gz
-#curl -o ${ESCROW}/deps/${jdkfile} http://nas-n.mgt.couchbase.com/builds/downloads/jdk/${jdkfile}
-
-# download folly's jemalloc-4.x dependency for now
-#curl -o ${ESCROW}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/jemalloc/4.5.0.1-cb1/jemalloc-centos7-x86_64-4.5.0.1-cb1.md5
-#curl -o ${ESCROW}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz http://172.23.120.24/builds/releases/cbdeps/jemalloc/4.5.0.1-cb1/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz
-#curl -o ${ESCROW}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz.md5 http://172.23.120.24/builds/releases/cbdeps/zlib/1.2.11-cb3/zlib-centos7-x86_64-1.2.11-cb3.md5
-#curl -o ${ESCROW}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz http://172.23.120.24/builds/releases/cbdeps/zlib/1.2.11-cb3/zlib-centos7-x86_64-1.2.11-cb3.tgz
-
-# Copy in cbdep - NEED a for loop to get all platforms
+# Copy in cbdep tools
 for cbdep_ver in ${CBDDEPS_VERSIONS}
 do
   curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-window http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-window

@@ -1,3 +1,4 @@
+# Need to update/sync latest required dependencies
 
 # Escrow Product
 VERSION=6.5.0
@@ -16,11 +17,6 @@ IMAGES="couchbasebuild/server-centos7-build:20181228"
 
 # Go versions
 GOVERS="1.7.6 1.8.3 1.8.5 1.9.6 1.10.3 1.11.4 1.11.5"
-
-# Boost mod - extract from tlm/deps/packages/boost/CMakeLists.txt
-BOOST_MODULES="intrusive assert config core detail functional math move mpl
-optional preprocessor static_assert throw_exception type_index
-type_traits utility variant"
 
 # JDK version - extract from cbas-core/cmake/Modules/FindCouchbaseJava.cmake
 OPENJDK_NAME=openjdk

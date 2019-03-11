@@ -54,18 +54,6 @@ mkdir -p ${CACHE}
 
 # Populating analytics jars to .cbdepcache
 cp -rp /escrow/deps/.cbdepcache /home/couchbase/.cbdepcache
-# Populating folly's jemalloc-4.x for now
-#cp -f ${ROOT}/deps/jemalloc-centos7-x86_64-4.5.0.1-cb1.tgz* ${CACHE}/
-#cp -f ${ROOT}/deps/zlib-centos7-x86_64-1.2.11-cb3.tgz*  ${CACHE}/
-#cp ${ROOT}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz.md5 \
-#   ${ROOT}/deps/folly-centos7-x86_64-v2018.08.13.00-cb1.tgz ${CACHE}/
-
-# Pre-populate the JDK by hand.
-#heading "Populating JDK..."
-#cd ${CACHE}
-#mkdir -p exploded/x86_64
-#cd exploded/x86_64
-#tar xf ${ROOT}/deps/jdk-11_linux-x64_bin.tar.gz
 
 # Copy of tlm for working in.
 if [ ! -d "${TLMDIR}" ]
@@ -136,6 +124,7 @@ build_cbdep() {
   cp ${tarball} ${CACHE}
   cp ${tarball/tgz/md5} ${CACHE}/$( basename ${tarball} ).md5
 }
+
 build_cbdep_v2() {
   dep=$1
   ver=$2
@@ -157,8 +146,6 @@ build_cbdep_v2() {
   export VERSION=$(egrep VERSION /home/couchbase/escrow/deps/${dep}/.repo/manifest.xml  | awk '{ for ( n=1; n<=NF; n++ ) if($n ~ "value=") print $n }'  | cut -d'=' -f2  | cut -d'"' -f2) && \
   export BLD_NUM=$(echo $ver | awk -F'-' '{print $2}') && \
   export LOCAL_BUILD=true && \
-  #Use the patch version
-  #cp /escrow/build-one-cbdep build-tools/cbdeps/scripts/build-one-cbdep && \
   build-tools/cbdeps/scripts/build-one-cbdep
 
   echo
@@ -184,7 +171,7 @@ do
   build_cbdep $(echo ${dep} | sed 's/:/ /')  || exit 1
 done
 
-# Pre-populate openjdk-rt
+# Pre-populate openjdk-rt, without this dep will cause apache-hyrack build failure
 mkdir -p ${ROOT}/src/build/tlm/deps/openjdk-rt.exploded
 cp -rp /escrow/deps/.cbdepscache/${OPENJDK_RT}-${OPENJDK_RT_VERSION}/openjdk-rt.jar ${ROOT}/src/build/tlm/deps/openjdk-rt.exploded/openjdk-rt.jar
 
@@ -192,7 +179,7 @@ cp -rp /escrow/deps/.cbdepscache/${OPENJDK_RT}-${OPENJDK_RT_VERSION}/openjdk-rt.
 heading "Copying Golang versions..."
 cp -a ${ROOT}/golang/* ${CACHE}
 
-# need to unset variables from cbdeps V2 build
+# Need to unset variables from cbdeps V2 build
   unset WORKSPACE
   unset PRODUCT
   unset VERSION
