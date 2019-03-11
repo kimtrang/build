@@ -70,18 +70,26 @@ fi
 set -e
 
 # Load local copy of escrowed source code into container
+# Removed -t from docker exec command as Jenkins doesn't like it: the input device is not a TTY
+if [[ ! -z ${WORKSPACE} ]]
+then
+  DOCKER_EXEC_OPTION='-i'
+else
+  DOCKER_EXEC_OPTION='-it'
+fi
+
 heading "Copying escrowed sources and dependencies into container"
-docker exec -it ${SLAVENAME} rm -rf /home/couchbase/escrow
-docker exec -it ${SLAVENAME} mkdir -p /home/couchbase/escrow
-docker exec -it ${SLAVENAME} cp -a /escrow/in-container-build.sh \
+docker exec ${DOCKER_EXEC_OPTION} ${SLAVENAME} rm -rf /home/couchbase/escrow
+docker exec ${DOCKER_EXEC_OPTION} ${SLAVENAME} mkdir -p /home/couchbase/escrow
+docker exec ${DOCKER_EXEC_OPTION} ${SLAVENAME} cp -a /escrow/in-container-build.sh \
   /escrow/escrow_config \
   /escrow/deps /escrow/golang \
   /escrow/src /home/couchbase/escrow
-docker exec -it ${SLAVENAME} chown -R couchbase:couchbase /home/couchbase
+docker exec ${DOCKER_EXEC_OPTION} ${SLAVENAME} chown -R couchbase:couchbase /home/couchbase
 
 # Launch build process
 heading "Running full Couchbase Server build in container..."
-docker exec -it -u couchbase ${SLAVENAME} bash \
+docker exec ${DOCKER_EXEC_OPTION} -u couchbase ${SLAVENAME} bash \
   /home/couchbase/escrow/in-container-build.sh ${PLATFORM} @@VERSION@@
 
 # And copy the installation packages out of the container.
