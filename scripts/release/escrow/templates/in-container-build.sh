@@ -123,6 +123,7 @@ build_cbdep() {
   tarball=$( ls ${TLMDIR}/deps/packages/build/deps/${dep}/*/*.tgz )
   cp ${tarball} ${CACHE}
   cp ${tarball/tgz/md5} ${CACHE}/$( basename ${tarball} ).md5
+  rm -rf ${TLMDIR}/deps/packages/build/deps/${dep}
 }
 
 build_cbdep_v2() {
@@ -153,6 +154,7 @@ build_cbdep_v2() {
   tarball=$( ls ${TLMDIR}/deps/packages/${dep}/*/*/*/*/*.tgz )
   cp ${tarball} ${CACHE}
   cp ${tarball/tgz/md5} ${CACHE}/$( basename ${tarball} ).md5
+  rm -rf ${TLMDIR}/deps/packages/${dep}
 }
 
 # Build V2 dependencies first.
