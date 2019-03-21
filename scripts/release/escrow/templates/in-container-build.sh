@@ -13,8 +13,6 @@ source /home/couchbase/escrow/escrow_config || exit 1
 DOCKER_PLATFORM=$1
 SERVER_VERSION=$2
 
-#CBDDEPS_VERSIONS="0.8.3 0.9.0 0.9.1 0.9.2"
-
 # Convert Docker platform to Build platform (sorry they're different)
 if [ "${DOCKER_PLATFORM}" = "ubuntu18" ]
 then
@@ -161,7 +159,7 @@ build_cbdep_v2() {
 for dep in $( cat ${ROOT}/deps/dep_v2_manifest_${DOCKER_PLATFORM}.txt )
 do
   DEPS=$(echo ${dep} | sed 's/:/ /')
-  echo "Building dep v2: ${DEPS}"
+  heading "Building dependency v2: ${DEPS}"
   build_cbdep_v2 $(echo ${dep} | sed 's/:/ /')  || exit 1
 done
 
@@ -169,7 +167,7 @@ done
 for dep in $( cat ${ROOT}/deps/dep_manifest_${DOCKER_PLATFORM}.txt )
 do
   DEPS=$(echo ${dep} | sed 's/:/ /')
-  echo "Building dep: ${DEPS}"
+  heading "Building dependency: ${DEPS}"
   build_cbdep $(echo ${dep} | sed 's/:/ /')  || exit 1
 done
 
