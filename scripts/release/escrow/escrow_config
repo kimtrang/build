@@ -3,6 +3,7 @@
 # Escrow Product
 VERSION=6.5.0
 PRODUCT=couchbase-server
+MANIFEST_FILE=couchbase-server/mad-hatter.xml
 
 # Docker images
 IMAGES="couchbasebuild/server-centos7-build:20181228"
