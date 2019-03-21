@@ -193,6 +193,6 @@ heading "Building Couchbase Server ${VERSION} Enterprise Edition..."
 ${ROOT}/src/cbbuild/scripts/jenkins/couchbase_server/server-linux-build.sh \
   ${PLATFORM} ${SERVER_VERSION} enterprise 9999
 
-# Remove any "oel6" binaries to avoid confusion
+# Remove any "oel7" binaries to avoid confusion
 rm -f ${ROOT}/src/couchbase*oel7*rpm
 

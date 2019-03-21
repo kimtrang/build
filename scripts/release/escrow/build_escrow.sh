@@ -146,27 +146,26 @@ do
   echo "add_packs: $add_packs"
   echo "add_packs_v2: $add_packs_v2"
 
-# Download and keep a record of all third-party deps
-dep_manifest=${ESCROW}/deps/dep_manifest_${platform}.txt
-dep_v2_manifest=${ESCROW}/deps/dep_v2_manifest_${platform}.txt
-echo "$add_packs_v2" > ${dep_v2_manifest}
-rm -f ${dep_manifest}
-for add_pack in ${add_packs}
-do
-  download_cbdep $(echo ${add_pack} | sed 's/:/ /g') ${dep_manifest}
-done
+  # Download and keep a record of all third-party deps
+  dep_manifest=${ESCROW}/deps/dep_manifest_${platform}.txt
+  dep_v2_manifest=${ESCROW}/deps/dep_v2_manifest_${platform}.txt
+  echo "$add_packs_v2" > ${dep_v2_manifest}
+  rm -f ${dep_manifest}
+  for add_pack in ${add_packs}
+  do
+    download_cbdep $(echo ${add_pack} | sed 's/:/ /g') ${dep_manifest}
+  done
 
-# Get cbdeps V2 source
-for add_pack in ${add_packs_v2}
-do
-  get_cbddeps2_src $(echo ${add_pack} | sed 's/:.*/ /g') master.xml
-done
+  # Get cbdeps V2 source
+  for add_pack in ${add_packs_v2}
+  do
+    get_cbddeps2_src $(echo ${add_pack} | sed 's/:.*/ /g') master.xml
+  done
 
-### Ensure rocksdb and folly built last
-egrep -v "^rocksdb|^folly" ${dep_manifest} > ${ESCROW}/deps/dep2.txt
-egrep "^rocksdb|^folly" ${dep_manifest} >> ${ESCROW}/deps/dep2.txt
-mv ${ESCROW}/deps/dep2.txt ${dep_manifest}
-
+  ### Ensure rocksdb and folly built last
+  egrep -v "^rocksdb|^folly" ${dep_manifest} > ${ESCROW}/deps/dep2.txt
+  egrep "^rocksdb|^folly" ${dep_manifest} >> ${ESCROW}/deps/dep2.txt
+  mv ${ESCROW}/deps/dep2.txt ${dep_manifest}
 done
 
 # Need this tool for v8 build
@@ -178,7 +177,7 @@ do
   curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-window http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-window
   curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-linux http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-linux
   curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-macos http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-macos
-  chmod +x ${ESCROW}/deps/cbdep-${cbdep_ver}-linux
+  chmod +x ${ESCROW}/deps/cbdep-${cbdep_ver}-*
 done
 
 # download ~/.cbdepcache dependency
@@ -190,19 +189,6 @@ cp -rp /home/couchbase/.cbdepcache ${ESCROW}/deps/.cbdepcache
 mkdir -p ${ESCROW}/deps/.cbdepscache
 ${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -d ${ESCROW}/deps/.cbdepscache ${OPENJDK_RT} ${OPENJDK_RT_VERSION}
 
-:<<'END'
-# One unfortunate patch required for flatbuffers to be built with GCC 7
-heading "Patching flatbuffers for GCC 7"
-cd ${ESCROW}/deps/flatbuffers
-git checkout v1.4.0 > /dev/null
-if [ $(git rev-parse HEAD) = "eba6b6f7c93cab4b945f1e39d9ef413d51d3711d" ]
-then
-  git cherry-pick bbb72f0b
-  git tag -f v1.4.0
-fi
-END
-
-### KIMKIM - NEED to get this via cbdep-0.9.1-linux tool
 heading "Downloading Go installers..."
 mkdir -p ${ESCROW}/golang
 cd ${ESCROW}/golang
@@ -222,8 +208,9 @@ cp -a escrow_config templates/* ${ESCROW}
 perl -pi -e "s/\@\@VERSION\@\@/${VERSION}/g; s/\@\@PLATFORMS\@\@/${PLATFORMS}/g" \
   ${ESCROW}/README.md ${ESCROW}/build-couchbase-server-from-escrow.sh
 
-heading "Creating escrow tarball (will take some time)..."
-cd ${ROOT}
+# Don't need this right now for weekly run
+#heading "Creating escrow tarball (will take some time)..."
+#cd ${ROOT}
 #tar czf ${PRODUCT}-${VERSION}.tar.gz ${PRODUCT}-${VERSION}
 
 heading "Done!"
