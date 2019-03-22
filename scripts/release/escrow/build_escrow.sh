@@ -172,7 +172,7 @@ done
 get_cbdep_git depot_tools
 
 # Copy in cbdep tools
-for cbdep_ver in ${CBDDEPS_VERSIONS}
+for cbdep_ver in ${CBDEP_VERSION}
 do
   curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-window http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-window
   curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-linux http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-linux
