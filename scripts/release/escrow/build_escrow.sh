@@ -49,7 +49,7 @@ git config --global user.name "Couchbase Build Team"
 git config --global user.email "build-team@couchbase.com"
 git config --global color.ui false
 #repo init -u git://github.com/couchbase/manifest -g all -m released/couchbase-server/${VERSION}.xml
-repo init -u git://github.com/couchbase/manifest -g all -m couchbase-server/mad-hatter.xml
+repo init -u git://github.com/couchbase/manifest -g all -m ${MANIFEST_FILE}
 repo sync --jobs=6
 
 # Ensure we have git history for 'master' branch of tlm, so we can
@@ -172,22 +172,16 @@ done
 get_cbdep_git depot_tools
 
 # Copy in cbdep tools
-for cbdep_ver in ${CBDEP_VERSION}
-do
-  curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-window http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-window
-  curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-linux http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-linux
-  curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-macos http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-macos
-  chmod +x ${ESCROW}/deps/cbdep-${cbdep_ver}-*
-done
+curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-linux http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-linux
+chmod +x ${ESCROW}/deps/cbdep-${cbdep_ver}-linux
 
 # download ~/.cbdepcache dependency
-cbdep_ver_latest=$(echo ${CBDDEPS_VERSIONS} | tr ' ' '\n' | tail -1)
 # Pre-populate the openjdk, openjdk-rt and analytic-jars
-${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -n ${ANALYTICS_JARS} ${ANALYTICS_JARS_VERSION}
-${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -n ${OPENJDK_NAME} ${OPENJDK_VERSION}
+${ESCROW}/deps/cbdep-${CBDEP_VERSION}-linux  install -n ${ANALYTICS_JARS} ${ANALYTICS_JARS_VERSION}
+${ESCROW}/deps/cbdep-${CBDEP_VERSION}-linux  install -n ${OPENJDK_NAME} ${OPENJDK_VERSION}
 cp -rp /home/couchbase/.cbdepcache ${ESCROW}/deps/.cbdepcache
 mkdir -p ${ESCROW}/deps/.cbdepscache
-${ESCROW}/deps/cbdep-${cbdep_ver_latest}-linux  install -d ${ESCROW}/deps/.cbdepscache ${OPENJDK_RT} ${OPENJDK_RT_VERSION}
+${ESCROW}/deps/cbdep-${CBDEP_VERSION}-linux  install -d ${ESCROW}/deps/.cbdepscache ${OPENJDK_RT} ${OPENJDK_RT_VERSION}
 
 heading "Downloading Go installers..."
 mkdir -p ${ESCROW}/golang
