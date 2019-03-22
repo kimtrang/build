@@ -66,7 +66,7 @@ case ${PLATFORM} in
   win*) cbdeps_platform='window';;
      *) cbdeps_platform='linux' ;;
 esac
-for cbdep_ver in ${CBDDEPS_VERSIONS}
+for cbdep_ver in ${CBDEP_VERSION}
 do
   if [ ! -d "${HOME}/.cbdepscache/cbdep/${cbdep_ver}/" ]
   then

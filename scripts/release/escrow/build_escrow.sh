@@ -172,8 +172,8 @@ done
 get_cbdep_git depot_tools
 
 # Copy in cbdep tools
-curl -o ${ESCROW}/deps/cbdep-${cbdep_ver}-linux http://packages.couchbase.com/cbdep/${cbdep_ver}/cbdep-${cbdep_ver}-linux
-chmod +x ${ESCROW}/deps/cbdep-${cbdep_ver}-linux
+curl -o ${ESCROW}/deps/cbdep-${CBDEP_VERSION}-linux http://packages.couchbase.com/cbdep/${CBDEP_VERSION}/cbdep-${CBDEP_VERSION}-linux
+chmod +x ${ESCROW}/deps/cbdep-${CBDEP_VERSION}-linux
 
 # download ~/.cbdepcache dependency
 # Pre-populate the openjdk, openjdk-rt and analytic-jars
