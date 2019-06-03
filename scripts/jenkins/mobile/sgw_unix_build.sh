@@ -84,7 +84,7 @@ then
     if [[ $ARCHP =~ 64   ]] ; then ARCHP=amd64
                               else ARCHP=i386 ; fi
     PLATFORM=${OS}-${ARCH}
-    PKG_NAME=couchbase-sync-gateway_${VERSION}-${BLD_NUM}-${DISTRO}_${ARCHP}.${PKGTYPE}
+    PKG_NAME=couchbase-sync-gateway_${VERSION}-${BLD_NUM}_${ARCHP}.${PKGTYPE}
     NEW_PKG_NAME=couchbase-sync-gateway-${EDITION}_${VERSION}-${BLD_NUM}-${DISTRO}_${PARCH}.${PKGTYPE}
 elif [[ $DISTRO == "ubuntu16" ]]
 then
