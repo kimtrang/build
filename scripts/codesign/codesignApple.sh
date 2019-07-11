@@ -33,54 +33,14 @@ OSX=${4} # macos vs elcapitan
 
 DOWNLOAD_NEW_PKG=${5}  # Get new build
 
+ARCHITECTURE='x86_64'
+
 result="rejected"
 
-rel_code=""
-if [[ ${PKG_VERSION} == 5.5* ]]
-then
-    rel_code="vulcan"
-elif [[ ${PKG_VERSION} == 4.7* ]] || [[ ${PKG_VERSION} == 5.0* ]] || [[ ${PKG_VERSION} == 5.1* ]]
-then
-    rel_code="spock"
-elif [[ ${PKG_VERSION} == 4.5* ]] || [[ ${PKG_VERSION} == 4.6* ]]
-then
-    rel_code="watson"
-elif [[ ${PKG_VERSION} == 4.0* ]] || [[ ${PKG_VERSION} == 4.1* ]]
-then
-    rel_code="sherlock"
-elif [[ ${PKG_VERSION} == 3.* ]]
-then
-    rel_code="3"
-fi
-
-if [[ "x${rel_code}" == "x" ]]
-then
-    echo Unsupported version ${PKG_VERSION}
-    exit 1
-fi
-
-if [[ "${rel_code}" == "3" ]]
-then
-    PKG_URL=http://latestbuilds.hq.couchbase.com
-    PKG_NAME=couchbase-server-${EDITION}_x86_64_${PKG_VERSION}-${PKG_BUILD_NUM}-rel.zip
-    PKG_DIR=couchbase-server-${EDITION}_x86_64_3
-else
-    PKG_URL=http://latestbuilds.service.couchbase.com/builds/latestbuilds/${PRODUCT}/${rel_code}/${PKG_BUILD_NUM}
-    # MB-25378: short-term workaround - when building server+analytics,
-    # use different filename convention
-    if [[ "${PRODUCT}" == "server-analytics" ]]
-    then
-        FILEBIT=analytics
-    else
-        FILEBIT=${EDITION}
-    fi
-    PKG_NAME_US=couchbase-server-${FILEBIT}_${PKG_VERSION}-${PKG_BUILD_NUM}-${OSX}_x86_64-unsigned.zip
-    PKG_NAME=couchbase-server-${FILEBIT}_${PKG_VERSION}-${PKG_BUILD_NUM}-${OSX}_x86_64.zip
-    # PKG_DIR is set by couchdbx-app, and isn't analytics-specific,
-    # so continue just using EDITION
-    PKG_DIR=couchbase-server-${EDITION}_${PKG_VERSION}
-fi
-
+PKG_URL=http://latestbuilds.service.couchbase.com/builds/latestbuilds/${PRODUCT}/zz-versions/${PKG_VERSION}/${PKG_BUILD_NUM}
+PKG_NAME_US=couchbase-server-${EDITION}_${PKG_VERSION}-${PKG_BUILD_NUM}-${OSX}_${ARCHITECTURE}-unsigned.zip
+PKG_NAME=couchbase-server-${EDITION}_${PKG_VERSION}-${PKG_BUILD_NUM}-${OSX}_${ARCHITECTURE}.zip
+PKG_DIR=couchbase-server-${EDITION}_${PKG_VERSION}
 
 if [[ ${DOWNLOAD_NEW_PKG} ]]
 then
@@ -108,7 +68,7 @@ fi
 
 echo ------- Unlocking keychain -----------
 set +x
-security unlock-keychain -p `cat ~/.ssh/security-password.txt` /Users/jenkins/Library/Keychains/login.keychain
+security unlock-keychain -p `cat ~/.ssh/security-password.txt` /Users/${USER}/Library/Keychains/login.keychain
 set -x
 
 echo -------- Must sign Sparkle framework all versions ----------
@@ -124,6 +84,8 @@ echo --------- Sign Couchbase app last --------------
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app
 
 popd
+
+# zip up the signed version
 
 rm -f ${PKG_NAME}
 zip -qry ${PKG_NAME} ${PKG_DIR}
