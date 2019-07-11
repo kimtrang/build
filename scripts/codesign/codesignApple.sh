@@ -68,7 +68,7 @@ fi
 
 echo ------- Unlocking keychain -----------
 set +x
-security unlock-keychain -p `cat ~/.ssh/security-password.txt` ${HOME}/Library/Keychains/login.keychain-db
+security unlock-keychain -p `cat ~/.ssh/security-password.txt` ${HOME}/Library/Keychains/login.keychain
 set -x
 
 echo -------- Must sign Sparkle framework all versions ----------
