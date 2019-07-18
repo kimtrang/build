@@ -39,5 +39,24 @@ create-dmg --volname "Couchbase Installer ${VERSION}-${BLD_NUM}-${EDITION}" \
            ${DMG_FILENAME} \
            ${PKG_DIR}
 
+sign_flags="--force --verbose --preserve-metadata=identifier,entitlements,requirements"
+echo --------- Sign Couchbase app last --------------
+codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" ${DMG_FILENAME}
+spctl -avvvv ${DMG_FILENAME} > tmp_dmg.txt 2>&1
+result=`grep "accepted" tmp.txt | awk '{ print $3 }'`
+echo ${result}
+if [[ ${result} =~ "accepted" ]]
+then
+    # Ensure it's actually signed
+    if [[ -z $(grep "no usable signature" tmp_dmg.txt) ]]
+    then
+        exit 0
+    else
+        exit 1
+    fi
+else
+    exit 1
+fi
+
 # get rid of the symlink to applications
 rm ${PKG_DIR}/Applications
