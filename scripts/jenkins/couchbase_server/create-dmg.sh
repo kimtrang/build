@@ -41,9 +41,9 @@ create-dmg --volname "Couchbase Installer ${VERSION}-${BLD_NUM}-${EDITION}" \
 
 sign_flags="--force --verbose --preserve-metadata=identifier,entitlements,requirements"
 echo --------- Sign Couchbase app last --------------
-codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" ${DMG_FILENAME}
-spctl -avvvv ${DMG_FILENAME} > tmp_dmg.txt 2>&1
-result=`grep "accepted" tmp.txt | awk '{ print $3 }'`
+codesign --force $sign_flags --sign "Developer ID Application: Couchbase, Inc" ${DMG_FILENAME}
+spctl -a -t open --context context:primary-signature -v ${DMG_FILENAME} > tmp_dmg.txt 2>&1
+result=`grep "accepted" tmp_dmg.txt | awk '{ print $3 }'`
 echo ${result}
 if [[ ${result} =~ "accepted" ]]
 then
