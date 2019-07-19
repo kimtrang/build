@@ -47,7 +47,7 @@ set -x
 echo --------- Sign Couchbase app last --------------
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" ${DMG_FILENAME}
 spctl -a -t open --context context:primary-signature -v ${DMG_FILENAME} > tmp_dmg.txt 2>&1
-result=`grep "accepted" tmp_dmg.txt | awk '{ print $3 }'`
+result=`grep "accepted" tmp_dmg.txt | awk '{ print $2 }'`
 echo ${result}
 if [[ ${result} =~ "accepted" ]]
 then
