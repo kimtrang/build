@@ -40,8 +40,12 @@ create-dmg --volname "Couchbase Installer ${VERSION}-${BLD_NUM}-${EDITION}" \
            ${PKG_DIR}
 
 sign_flags="--force --verbose --preserve-metadata=identifier,entitlements,requirements"
+echo ------- Unlocking keychain -----------
+set +x
+security unlock-keychain -p `cat ~/.ssh/security-password.txt` /Users/jenkins/Library/Keychains/login.keychain
+set -x
 echo --------- Sign Couchbase app last --------------
-codesign --force $sign_flags --sign "Developer ID Application: Couchbase, Inc" ${DMG_FILENAME}
+codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" ${DMG_FILENAME}
 spctl -a -t open --context context:primary-signature -v ${DMG_FILENAME} > tmp_dmg.txt 2>&1
 result=`grep "accepted" tmp_dmg.txt | awk '{ print $3 }'`
 echo ${result}
