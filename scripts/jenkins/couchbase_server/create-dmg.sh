@@ -64,6 +64,6 @@ if [[ ${CB_PRODUCTION_BUILD} ]]; then
         cat tmp_dmg.txt
         exit 1
     fi
-
+if
 # get rid of the symlink to applications
 rm ${PKG_DIR}/Applications
