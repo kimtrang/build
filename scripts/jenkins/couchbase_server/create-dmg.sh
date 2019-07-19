@@ -42,7 +42,7 @@ create-dmg --volname "Couchbase Installer ${VERSION}-${BLD_NUM}-${EDITION}" \
 sign_flags="--force --verbose --preserve-metadata=identifier,entitlements,requirements"
 echo ------- Unlocking keychain -----------
 set +x
-security unlock-keychain -p `cat ~/.ssh/security-password.txt` /Users/jenkins/Library/Keychains/login.keychain
+security unlock-keychain -p `cat ~/.ssh/security-password.txt` /Users/${USER}/Library/Keychains/login.keychain
 set -x
 echo --------- Sign Couchbase app last --------------
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" ${DMG_FILENAME}
