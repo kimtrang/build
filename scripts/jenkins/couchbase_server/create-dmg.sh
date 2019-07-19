@@ -40,7 +40,7 @@ create-dmg --volname "Couchbase Installer ${VERSION}-${BLD_NUM}-${EDITION}" \
            ${PKG_DIR}
 
 # force sign dmg pkg - only if CB_PRODUCTION_BUILD defined
-if [[ ${CB_PRODUCTION_BUILD} ]]; then
+if [[ ${CB_PRODUCTION_BUILD} == 'true' ]]; then
     sign_flags="--force --verbose --preserve-metadata=identifier,entitlements,requirements"
     echo ------- Unlocking keychain -----------
     set +x
