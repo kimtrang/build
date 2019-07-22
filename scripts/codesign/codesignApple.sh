@@ -66,6 +66,7 @@ else
     pushd ${PKG_DIR}
 fi
 
+: <<'COMMENT'
 echo ------- Unlocking keychain -----------
 set +x
 security unlock-keychain -p `cat ~/.ssh/security-password.txt` ${HOME}/Library/Keychains/login.keychain
@@ -82,6 +83,8 @@ codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase
 
 echo --------- Sign Couchbase app last --------------
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app
+
+COMMENT
 
 popd
 
