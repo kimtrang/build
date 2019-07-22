@@ -26,6 +26,26 @@ if [[ ! -e "${PKG_DIR}/Couchbase\  Server.app" ]] && [[ ! -e ${PKG_DIR}/README.t
     exit 1
 fi
 
+echo ------- Unlocking keychain -----------
+set +x
+security unlock-keychain -p `cat ~/.ssh/security-password.txt` ${HOME}/Library/Keychains/login.keychain
+set -x
+
+pushd ${PKG_DIR}
+echo -------- Must sign Sparkle framework all versions ----------
+sign_flags="--force --timestamp --verbose --options=runtime --preserve-metadata=identifier,entitlements,requirements"
+echo options: $sign_flags -----
+codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/A/Sparkle
+codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/A
+
+codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/Current/Sparkle
+codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/Current
+
+echo --------- Sign Couchbase app last --------------
+codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app
+
+popd
+
 # Create dmg package
 DMG_FILENAME=couchbase-server-${EDITION}_${VERSION}-${BLD_NUM}-${OSX}_${ARCHITECTURE}.dmg
 rm -rf ${DMG_FILENAME}
