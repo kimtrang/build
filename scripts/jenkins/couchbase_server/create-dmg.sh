@@ -26,6 +26,11 @@ if [[ ! -e "${PKG_DIR}/Couchbase\  Server.app" ]] && [[ ! -e ${PKG_DIR}/README.t
     exit 1
 fi
 
+# Create dmg package
+DMG_FILENAME=couchbase-server-${EDITION}_${VERSION}-${BLD_NUM}-${OSX}_${ARCHITECTURE}.dmg
+rm -rf ${DMG_FILENAME}
+ln -s /Applications ${PKG_DIR}
+
 echo ------- Unlocking keychain -----------
 set +x
 security unlock-keychain -p `cat ~/.ssh/security-password.txt` ${HOME}/Library/Keychains/login.keychain
@@ -43,13 +48,9 @@ codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase
 
 echo --------- Sign Couchbase app last --------------
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app
-
 popd
 
-# Create dmg package
-DMG_FILENAME=couchbase-server-${EDITION}_${VERSION}-${BLD_NUM}-${OSX}_${ARCHITECTURE}.dmg
-rm -rf ${DMG_FILENAME}
-ln -s /Applications ${PKG_DIR}
+#
 create-dmg --volname "Couchbase Installer ${VERSION}-${BLD_NUM}-${EDITION}" \
            --background "${PKG_DIR}/Couchbase Server.app/Contents/Resources/InstallerBackground.jpg" \
            --window-size 800 600 \
