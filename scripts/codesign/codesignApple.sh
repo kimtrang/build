@@ -91,7 +91,7 @@ popd
 # zip up the signed version
 
 rm -f ${PKG_NAME}
-zip -qry ${PKG_NAME} ${PKG_DIR}
+#zip -qry ${PKG_NAME} ${PKG_DIR}
 rm -f ${PKG_NAME_US}
 
 # Verify codesigned successfully
