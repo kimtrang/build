@@ -38,7 +38,7 @@ set -x
 
 pushd ${PKG_DIR}
 echo -------- Must sign Sparkle framework all versions ----------
-sign_flags="--force --timestamp --verbose --options=runtime --preserve-metadata=identifier,entitlements,requirements"
+sign_flags="--force --deep --strict  --timestamp --verbose --options=runtime --preserve-metadata=identifier,entitlements,requirements"
 echo options: $sign_flags -----
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/A/Sparkle
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/A
