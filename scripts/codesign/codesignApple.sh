@@ -66,8 +66,9 @@ else
     pushd ${PKG_DIR}
 fi
 
-install_name_tool -change /Users/jenkins/jenkins/workspace/cbdeps-platform-build-old/deps/packages/build/install/lib/libpcre.1.dylib @rpath/libpcre.1.dylib Couchbase\ Server.app/ContentsResources/couchbase-core/lib/libpcrecpp.dylib
-install_name_tool -change /Users/jenkins/jenkins/workspace/cbdeps-platform-build-old/deps/packages/build/install/lib/libpcre.1.dylib @rpath/libpcre.1.dylib Couchbase\ Server.app/ContentsResources/couchbase-core/lib/libpcreposix.dylib
+install_name_tool -change /Users/jenkins/jenkins/workspace/cbdeps-platform-build-old/deps/packages/build/install/lib/libpcre.1.dylib @rpath/libpcre.1.dylib Couchbase\ Server.app/Contents/Resources/couchbase-core/lib/libpcrecpp.dylib
+install_name_tool -change
+/Users/jenkins/jenkins/workspace/cbdeps-platform-build-old/deps/packages/build/install/lib/libpcre.1.dylib @rpath/libpcre.1.dylib Couchbase\ Server.app/Contents/Resources/couchbase-core/lib/libpcreposix.dylib
 
 echo ------- Unlocking keychain -----------
 set +x
