@@ -48,7 +48,7 @@ create-dmg --volname "Couchbase Installer ${VERSION}-${BLD_NUM}-${EDITION}" \
 
 # force sign dmg pkg - only if CB_PRODUCTION_BUILD defined
 if [[ ${CB_PRODUCTION_BUILD} == 'true' ]]; then
-    sign_flags="--force --timestamp --verbose  --options=runtime --preserve-metadata=identifier,entitlements,requirements"
+    sign_flags="--force --timestamp --verbose  --options runtime --preserve-metadata=identifier,entitlements,requirements"
     echo ------- Unlocking keychain -----------
     set +x
     security unlock-keychain -p `cat ~/.ssh/security-password.txt` ${HOME}/Library/Keychains/login.keychain
