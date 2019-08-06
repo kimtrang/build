@@ -91,7 +91,7 @@ codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase
 
 # Notarization requires codesign all exe binaries
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/Autoupdate
-for fl in `find Couchbase\ Server.app/Contents/Resources/couchbase-core/bin Couchbase\ Server.app/Contents/Resources/couchbase-core/lib  -perm +111 -type f -or -type l`; do  codesign $sign_flags  --sign "Developer ID Application: Couchbase, Inc" $fl; done
+for fl in `find Couchbase\ Server.app/Contents/Resources/couchbase-core/bin Couchbase\ Server.app/Contents/Resources/couchbase-core/lib  -perm +111 -type f -or -type l`; do  codesign $sign_flags  --sign "Developer ID Application: Couchbase, Inc" "$fl" ; done
 
 echo --------- Sign Couchbase app last --------------
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app
