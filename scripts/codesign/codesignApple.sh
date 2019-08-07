@@ -95,8 +95,9 @@ cd Couchbase\ Server.app
 find Contents/Resources/couchbase-core/bin Contents/Resources/couchbase-core/lib -perm +111 -type f > ../exe_libs.txt
 for fl in `cat ../exe_libs.txt`; do echo $fl;  codesign $sign_flags  --sign "Developer ID Application: Couchbase, Inc" $fl ; done
 
-for i in `find Contents/Resources/couchbase-core/lib Contents/Resources/couchbase-core/bin -type f `; do file $i |egrep -i 'executable|archive' > ../exe_libs_tmp.txt ; done
-cat ../exe_libs_tmp.txt | awk -F':' '{print $1}' > ../exe_libs2.txt
+find Contents/Resources/couchbase-core/lib Contents/Resources/couchbase-core/bin -type f > ../exe_libs_tmp.txt
+for i in `cat ../exe_libs_tmp.txt`; do file $i |egrep -i 'executable|archive' > ../exe_libs_tmp2.txt ; done
+cat ../exe_libs_tmp2.txt | awk -F':' '{print $1}' > ../exe_libs2.txt
 for fl in `cat ../exe_libs2.txt`; do echo $fl;  codesign $sign_flags  --sign "Developer ID Application: Couchbase, Inc" $fl ; done
 
 cd ..
