@@ -81,7 +81,7 @@ security unlock-keychain -p `cat ~/.ssh/security-password.txt` ${HOME}/Library/K
 set -x
 
 echo -------- Must sign Sparkle framework all versions ----------
-sign_flags="--force --deep --strict --timestamp --verbose --options runtime --preserve-metadata=identifier,entitlements,requirements"
+sign_flags="--force --deep --strict --timestamp --verbose --options runtime --preserve-metadata=identifier,entitlements,requirements --entitlements ${WORKSPACE}/build/scripts/codesign/entitlements.xml"
 echo options: $sign_flags -----
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/A/Sparkle
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/A
@@ -89,14 +89,12 @@ codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/Current/Sparkle
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/Current
 
-# Notarization requires codesign all exe binaries
+echo -------- Must sign exe/zip/jar binaries for notarization ----------
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/Autoupdate
 cd Couchbase\ Server.app
-
 find Contents/Resources/couchbase-core/bin Contents/Resources/couchbase-core/lib  -type f -exec file $i {} \; | egrep -i 'executable|archive|shared' >> ../exe_libs_tmp.txt
 cat ../exe_libs_tmp.txt | awk -F':' '{print $1}' > ../exe_libs.txt
 for fl in `cat ../exe_libs.txt`; do echo $fl;  codesign $sign_flags  --sign "Developer ID Application: Couchbase, Inc" $fl ; done
-
 cd ..
 
 echo --------- Sign Couchbase app last --------------
