@@ -135,7 +135,8 @@ for i in ${CBAS_ZIP}; do
     mkdir -p tmp
     cd tmp; unzip ../$i
     find . -type f -exec codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" {} +
-    zip -r ../$i
+    zip -r ../$i . && rm -rf *
+    cd ..
 done
 
 cd ..
