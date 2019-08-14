@@ -39,7 +39,6 @@ result="rejected"
 
 PKG_URL=http://latestbuilds.service.couchbase.com/builds/latestbuilds/${PRODUCT}/zz-versions/${PKG_VERSION}/${PKG_BUILD_NUM}
 PKG_NAME_US=couchbase-server-${EDITION}_${PKG_VERSION}-${PKG_BUILD_NUM}-${OSX}_${ARCHITECTURE}-unsigned.zip
-PKG_NAME=couchbase-server-${EDITION}_${PKG_VERSION}-${PKG_BUILD_NUM}-${OSX}_${ARCHITECTURE}.zip
 PKG_DIR=couchbase-server-${EDITION}_${PKG_VERSION}
 
 if [[ ${DOWNLOAD_NEW_PKG} ]]
@@ -132,8 +131,14 @@ Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.pack.jmod
 Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.rmic.jmod
 Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.scripting.nashorn.shell.jmod
 Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.security.auth.jmod'
-for jfile in $JAVA_FILES; do
-    echo $jfile; codesign $java_sign_flags --sign "Developer ID Application: Couchbase, Inc" $jfile
+for fl in ${JAVA_FILES}; do
+    mkdir -p tmp
+    cd tmp; unzip -qq ../$fl
+    find . -type f -exec file $i {} \; | egrep -i 'executable|archive|shared' > /tmp/k
+    for xi in $(cat /tmp/k | awk -F':' '{print $1}'); do codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" $xi; done
+    cd ..
+    zip  -qry ../$fl .
+    cd ..; rm -rf tmp
 done
 
 cd ..
@@ -142,12 +147,6 @@ echo --------- Sign Couchbase app last --------------
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app
 
 popd
-
-# zip up the signed version
-
-rm -f ${PKG_NAME}
-zip -qry ${PKG_NAME} ${PKG_DIR}
-rm -f ${PKG_NAME_US}
 
 # Verify codesigned successfully
 spctl -avvvv ${PKG_DIR}/*.app > tmp.txt 2>&1
