@@ -98,7 +98,7 @@ cat ../exe_libs_tmp.txt | awk -F':' '{print $1}' > ../exe_libs.txt
 for fl in `cat ../exe_libs.txt`; do echo $fl;  codesign $sign_flags  --sign "Developer ID Application: Couchbase, Inc" $fl ; done
 
 echo -------- Sign jdk binaries with java.entitlements for notarization ----------
-FILES='Contents/Resources/couchbase-core/lib/cbas/repo/netty-all-4.1.32.Final.jar
+JAVA_FILES='Contents/Resources/couchbase-core/lib/cbas/repo/netty-all-4.1.32.Final.jar
 Contents/Resources/couchbase-core/lib/cbas/repo/netty-tcnative-boringssl-static-2.0.20.Final.jar
 Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/java.base.jmod
 Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/java.desktop.jmod
@@ -132,7 +132,7 @@ Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.pack.jmod
 Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.rmic.jmod
 Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.scripting.nashorn.shell.jmod
 Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.security.auth.jmod'
-for jfile in FILES; do
+for jfile in $JAVA_FILES; do
     echo $jfile; codesign $java_sign_flags --sign "Developer ID Application: Couchbase, Inc" $jfile
 done
 
