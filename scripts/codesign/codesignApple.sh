@@ -48,7 +48,7 @@ then
     if [[ -d ${PKG_DIR} ]] ; then rm -rf ${PKG_DIR} ; fi
     if [[ -e ${PKG_NAME_US} ]]
     then
-        unzip -qq ${PKG_NAME_US}
+        7za x ${PKG_NAME_US}
     else
         echo ${PKG_NAME_US} not found!
         exit 1
