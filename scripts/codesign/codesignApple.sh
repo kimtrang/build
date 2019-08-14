@@ -82,7 +82,7 @@ set -x
 
 echo -------- Must sign Sparkle framework all versions ----------
 sign_flags="--force --deep --strict --timestamp --verbose --options runtime --preserve-metadata=identifier,entitlements,requirements"
-java_sign_flags="--force --deep --strict --timestamp --verbose --options runtime --entitlements java.entitlements"
+java_sign_flags="--force --deep --strict --timestamp --verbose --options runtime --entitlements ${WORKSPACE}/build/scripts/codesign/java.entitlements"
 echo options: $sign_flags -----
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/A/Sparkle
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/A
