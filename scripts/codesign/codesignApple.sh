@@ -136,7 +136,6 @@ for fl in ${JAVA_FILES}; do
     cd tmp; unzip -qq ../$fl
     find . -type f -exec file $i {} \; | egrep -i 'executable|archive|shared' > /tmp/k
     for xi in $(cat /tmp/k | awk -F':' '{print $1}'); do codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" $xi; done
-    cd ..
     zip  -qry ../$fl .
     cd ..; rm -rf tmp
 done
