@@ -48,7 +48,7 @@ then
     if [[ -d ${PKG_DIR} ]] ; then rm -rf ${PKG_DIR} ; fi
     if [[ -e ${PKG_NAME_US} ]]
     then
-        7za x ${PKG_NAME_US}
+        unzip -qq  ${PKG_NAME_US}
     else
         echo ${PKG_NAME_US} not found!
         exit 1
@@ -133,7 +133,7 @@ Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.scripting.nashorn.s
 Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.security.auth.jmod'
 for fl in ${JAVA_FILES}; do
     mkdir -p tmp
-    cd tmp; unzip -qq ../$fl
+    cd tmp; 7za x ../$fl
     find . -type f -exec file $i {} \; | egrep -i 'executable|archive|shared' > /tmp/k
     for xi in $(cat /tmp/k | awk -F':' '{print $1}'); do codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" $xi; done
     zip  -qry ../$fl .
