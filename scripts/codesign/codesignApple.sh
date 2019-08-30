@@ -97,41 +97,8 @@ cat ../exe_libs_tmp.txt | awk -F':' '{print $1}' > ../exe_libs.txt
 for fl in `cat ../exe_libs.txt`; do echo $fl;  codesign $sign_flags  --sign "Developer ID Application: Couchbase, Inc" $fl ; done
 
 echo -------- Sign jdk binaries with java.entitlements for notarization ----------
-JAVA_FILES='Contents/Resources/couchbase-core/lib/cbas/repo/netty-all-4.1.32.Final.jar
-Contents/Resources/couchbase-core/lib/cbas/repo/netty-tcnative-boringssl-static-2.0.20.Final.jar
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/java.base.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/java.desktop.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/java.instrument.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/java.management.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/java.prefs.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/java.rmi.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/java.scripting.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/java.security.jgss.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/java.smartcardio.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.aot.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.attach.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.compiler.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.crypto.cryptoki.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.crypto.ec.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.hotspot.agent.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.jartool.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.javadoc.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.jcmd.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.jconsole.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.jdeps.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.jdi.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.jdwp.agent.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.jlink.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.jshell.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.jstatd.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.management.agent.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.management.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.net.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.pack.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.rmic.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.scripting.nashorn.shell.jmod
-Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/jdk.security.auth.jmod'
-for fl in ${JAVA_FILES}; do
+for fl in Contents/Resources/couchbase-core/lib/cbas/repo/netty*.jar \
+    Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/*.jmod; do
     mkdir -p tmp
     cd tmp; 7za x ../$fl
     find . -type f -exec file $i {} \; | egrep -i 'executable|archive|shared' > /tmp/k
