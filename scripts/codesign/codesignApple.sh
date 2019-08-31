@@ -81,7 +81,6 @@ set -x
 
 echo -------- Must sign Sparkle framework all versions ----------
 sign_flags="--force --deep --strict --timestamp --verbose --options runtime --preserve-metadata=identifier,entitlements,requirements"
-java_sign_flags="--force --deep --strict --timestamp --verbose --options runtime --entitlements ${WORKSPACE}/build/scripts/codesign/java.entitlements"
 echo options: $sign_flags -----
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/A/Sparkle
 codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" Couchbase\ Server.app/Contents/Frameworks/Sparkle.framework/Versions/A
@@ -96,9 +95,9 @@ find Contents/Resources/couchbase-core/bin Contents/Resources/couchbase-core/lib
 cat ../exe_libs_tmp.txt | awk -F':' '{print $1}' > ../exe_libs.txt
 for fl in `cat ../exe_libs.txt`; do echo $fl;  codesign $sign_flags  --sign "Developer ID Application: Couchbase, Inc" $fl ; done
 
-echo -------- Sign jdk binaries with java.entitlements for notarization ----------
-for fl in Contents/Resources/couchbase-core/lib/cbas/repo/netty*.jar \
-    Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/*.jmod; do
+echo -------- Sign jdk binaries for notarization ----------
+JAVA_FILES=$(ls Contents/Resources/couchbase-core/lib/cbas/repo/netty*.jar Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/*.jmod)
+for fl in ${JAVA_FILES}; do
     mkdir -p tmp
     cd tmp; 7za x ../$fl
     find . -type f -exec file $i {} \; | egrep -i 'executable|archive|shared' > /tmp/k
