@@ -95,16 +95,16 @@ find Contents/Resources/couchbase-core/bin Contents/Resources/couchbase-core/lib
 cat ../exe_libs_tmp.txt | awk -F':' '{print $1}' > ../exe_libs.txt
 for fl in `cat ../exe_libs.txt`; do echo $fl;  codesign $sign_flags  --sign "Developer ID Application: Couchbase, Inc" $fl ; done
 
-echo -------- Sign jdk binaries for notarization ----------
-JAVA_FILES=$(ls Contents/Resources/couchbase-core/lib/cbas/repo/netty*.jar Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/*.jmod)
-for fl in ${JAVA_FILES}; do
-    mkdir -p tmp
-    cd tmp; 7za x ../$fl
-    find . -type f -exec file $i {} \; | egrep -i 'executable|archive|shared' > /tmp/k
-    for xi in $(cat /tmp/k | awk -F':' '{print $1}'); do codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" $xi; done
-    zip  -qry ../$fl .
-    cd ..; rm -rf tmp
-done
+#echo -------- Sign jdk binaries for notarization ----------
+#JAVA_FILES=$(ls Contents/Resources/couchbase-core/lib/cbas/repo/netty*.jar Contents/Resources/couchbase-core/lib/cbas/runtime/jmods/*.jmod)
+#for fl in ${JAVA_FILES}; do
+#    mkdir -p tmp
+#    cd tmp; 7za x ../$fl
+#    find . -type f -exec file $i {} \; | egrep -i 'executable|archive|shared' > /tmp/k
+#    for xi in $(cat /tmp/k | awk -F':' '{print $1}'); do codesign $sign_flags --sign "Developer ID Application: Couchbase, Inc" $xi; done
+#    zip  -qry ../$fl .
+#    cd ..; rm -rf tmp
+#done
 
 cd ..
 
